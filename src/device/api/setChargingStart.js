@@ -5,13 +5,12 @@
  * */
 
 const {packageErr, isAuth} = require('../utils')
-const API_ID = 2;
 
 module.exports = function(client, next){
     // 提取设备数据
-    let deviceData = client.data;
+    let deviceData = client.data.data;
     // 拉取错误服务
-    let  {ERR_TYPE} = client.server.services_error;
+    let  {ERR_TYPE} = client.server.services.AppError.constructor.error;
     // 检查设备是否授权
     if(isAuth(client)){
         let msgId = deviceData['msgId'];

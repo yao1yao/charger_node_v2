@@ -62,6 +62,24 @@ module.exports=function(sequelize){
             }
         })
     }
+    /**
+     *
+     * @returns {*}
+     */
+    DeviceInfo.searchId = function(options){
+        let self = this;
+        return DeviceInfo.findOne({
+            where:{
+                id : options.id
+            }
+        }).then(result=>{
+            if(result) {
+                return sequelize.Promise.resolve(result)
+            }else{
+                return sequelize.Promise.resolve(null)
+            }
+        })
+    }
     // 因为调用该方法的是基于该模型创建的实例，所以将此方法放置在显示原型上
     DeviceInfo.prototype.auth = function(){
         let self = this;

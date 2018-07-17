@@ -5,18 +5,16 @@
  * 2. 处理重复握手
  * 3. 响应结果
  */
-const debug = require('debug')('socket:1-auth')
+const debug = require('debug')('socket:notifyNewDevice')
 const {packageErr, packageSuccess, isAuth} = require('../utils');
-const {Op} = require('sequelize');
-const API_ID = 1;
 module.exports = function (client, next) {
     // 提取设备数据
     let deviceData = client.data;
     // 拉取错误服务
-    let {ERR_TYPE} = client.server.services_error
+    let  ERR_TYPE = client.server.services.AppError.constructor.error;
     if (isAuth(client)) {
         // 已授权设备判断是否重连请求
-        let isReconnect = deviceData['reconnect']
+        let isReconnect = deviceData['data']['reconnect']
         if (isReconnect) {
             // 删除客户端
             debug('reconnect success!')
@@ -30,10 +28,10 @@ module.exports = function (client, next) {
         }
     } else {
         // 未授权执行授权操作
-        let {DeviceInfo, DeviceVersion, DeviceOwner} = client.server.services_db;
+        let {DeviceInfo, DeviceVersion, DeviceOwner} = client.server.services.DB;
 
         // 基于新数据创建新的实例
-        let deviceInfo = DeviceInfo.build(deviceData)
+        let deviceInfo = DeviceInfo.build(deviceData.data)
         deviceInfo.validate()
             .then(() => { //校验成功
                 return deviceInfo.auth(); //执行授权
@@ -43,7 +41,10 @@ module.exports = function (client, next) {
                     // 授权成功处理
                     client.auth = auth;
                     client.write(packageSuccess({
-                        apiId: API_ID
+                        "respType":deviceData.reqType,
+                        "data": {
+                            "meterNumber": "11111111"
+                        }
                     }));
                     client.server.addAuthClient(client);
                     next();
@@ -53,6 +54,7 @@ module.exports = function (client, next) {
                 }
             })
             .catch(err => {
+                console.log("123")
                 client.write(packageErr(ERR_TYPE.DEFAULT, err.message))
                 next();
             })

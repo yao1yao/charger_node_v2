@@ -1,7 +1,12 @@
 module.exports = function(err,req,res,next) {
-    res.json({
-        errCode:4,
-        errMsg:err.message
-    });
+    if(err) {
+        res.json({
+            "respType": req.url.replace(/\/command\//g, ''),
+            "data": {
+                respCode: 4,
+                errMsg: err.message
+            },
+        });
+    }
     next(err);
 }

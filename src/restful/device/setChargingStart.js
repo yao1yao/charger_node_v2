@@ -1,21 +1,39 @@
+const {check,validationResult} = require('express-validator/check')
+
 exports.post = function(req,res,next){
+    const result = validationResult(req).formatWith(({ location, msg, param, value, nestedErrors }) => {
+        return `${msg}`;
+    });
+    if (!result.isEmpty()) {
+        throw new Error(result.array().join())
+    }
     let {socketServer} = req.app.locals
-    let {DeviceInfo} = socketServer.services_db
-    let id = req.body.deviceId
+    let {DeviceInfo} = socketServer.services.DB;
     let setDuration = req.body.setDuration
+    let deviceId = parseInt(req.body.deviceId)
     let type = req.body.type
-    socketServer.sendCommand(id,{
-        apiId: 2,
-        data: {
-            type: type,
-            setDuration: setDuration
+    DeviceInfo.searchId({
+        id : deviceId
+    }).then(result=>{
+        // 设备不存在
+        if(!result){
+            throw new Error('device did not found')
+        }else{
+            return socketServer.sendCommand(deviceId,{
+                "reqType": "setChargingStart",
+                "data":{
+                    "type": 0,
+                    "userId": 1,
+                    "time": 60,
+                    "energy": 0
+                }
+            })
         }
     }).then(data=>{
-        res.json(data);
-        next();
+        res.json(data)
+        next()
     }).catch(err=>{
-        // todo::日志记录错误信息
-        res.json(err.message)
-        next();
+        res.json(err)
+        next()
     })
 }

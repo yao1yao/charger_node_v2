@@ -29,8 +29,11 @@ module.exports.packageSuccess =
      * */
     function packageSuccess(data){
         let respSuccess = {
-            ...data,
-            respCode: SUCCESS_CODE
+            "reqType": data.respType,
+            "data": {
+                "respCode": 100,
+                ...(data.data)
+            }
         }
         return JSON.stringify(respSuccess)
     }
