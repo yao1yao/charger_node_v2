@@ -99,7 +99,8 @@ module.exports=function(sequelize){
             if(device && device.device_owner_info && device.device_version_info){
                 return sequelize.Promise.resolve({
                     notifyUrl: device.device_owner_info.notify_url,
-                    id: device.id
+                    id: device.id,
+                    ownerId: device.owner_id
                 })
             }
         })

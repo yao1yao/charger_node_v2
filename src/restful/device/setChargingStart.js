@@ -9,11 +9,14 @@ exports.post = function(req,res,next){
     }
     let {socketServer} = req.app.locals
     let {DeviceInfo} = socketServer.services.DB;
-    let setDuration = req.body.setDuration
     let deviceId = parseInt(req.body.deviceId)
-    let type = req.body.type
+    let type = parseInt(req.body.type)
+    let time = parseInt(req.body.time)
+    let energy = parseInt(req.body.energy)
+    let ownerId = parseInt(req.body.ownerId)
+    let userId = parseInt(req.body.userId)
     DeviceInfo.searchId({
-        id : deviceId
+        id : parseInt(deviceId)
     }).then(result=>{
         // 设备不存在
         if(!result){
@@ -22,10 +25,10 @@ exports.post = function(req,res,next){
             return socketServer.sendCommand(deviceId,{
                 "reqType": "setChargingStart",
                 "data":{
-                    "type": 0,
-                    "userId": 1,
-                    "time": 60,
-                    "energy": 0
+                    "type": type,
+                    "userId": userId,
+                    "time": time,
+                    "energy": energy
                 }
             })
         }

@@ -4,7 +4,7 @@
  * 1. 将设备推送的信息转发给应用层
  * 2. 将设备推送的信息输出在日志控制台
  */
-const debug = require('debug')('socket:notifyChargerStatus')
+const debug = require('debug')('socket:notifyChargingInfo')
 const {packageErr, packageSuccess, isAuth} = require('../utils');
 const md5 = require('md5')
 const moment = require('moment')
@@ -12,10 +12,9 @@ module.exports = function (client, next) {
     // 提取设备数据
     let deviceData = client.data;
     // 拉取错误服务
-    // todo:: 这也太长了
     let  ERR_TYPE = client.server.services.AppError.constructor.error;
     if (isAuth(client)) {
-        // 连接层接收到信息
+        // 响应设备推送成功
         client.write(packageSuccess({
             "respType":deviceData.reqType,
         }))
@@ -25,10 +24,18 @@ module.exports = function (client, next) {
         // 构造需要推送的数据
         let msgId = client.constructor.generateMsgId()
         let postData= {
-            "apiType": "notify",
             "notify": deviceData.reqType,
+            "apiType": "notify",
+            "type": deviceData.data.type,
+            "energy": deviceData.data.energy,
+            "voltage": deviceData.data.voltage,
+            "current": deviceData.data.current,
+            "power": deviceData.data.power,
+            "duration": deviceData.data.duration,
             "status": deviceData.data.status,
             "connect": deviceData.data.connect,
+            "setDuration": deviceData.data.setDuration,
+            "setEnergy": deviceData.data.setEnergy,
             "msgType": 1,
             "msgSecret":md5(`${id}${msgId}${msgId.length}`),
             "msgDate": moment().format(),
@@ -38,10 +45,11 @@ module.exports = function (client, next) {
             "apiName": deviceData.reqType,
         }
         debug(postData)
-        // 更新对应 socket 中的信息
 
-
+        // 更新 socket 中的信息
         // 上报设备推送信息
+
+
         client.server.notify(id,postData,notifyUrl);
         next()
     } else {

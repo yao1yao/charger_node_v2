@@ -17,10 +17,7 @@ exports.post = function(req,res,next){
             throw new Error('device did not found')
         }else{
             return socketServer.sendCommand(deviceId,{
-                "reqType": "setChargingEnd",
-                "data":{
-                    "deviceId": deviceId
-                }
+                "reqType": "getChargerStatus"
             })
         }
     }).then(data=>{

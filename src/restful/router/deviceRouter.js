@@ -5,9 +5,10 @@ const {matchData,sanitize} = require('express-validator/filter')
 /*设置类*/
 const setChargingStart = require('../device/setChargingStart')
 const setChargingEnd = require('../device/setChargingEnd')
-
 /*获取类*/
-
+const getChargerStatus = require('../device/getChargerStatus')
+const getChargingInfo  = require('../device/getChargingInfo')
+const getAllInfo = require('../device/getAllInfo')
 router.post('/setChargingStart',[
     check('deviceId','deviceId must be int ').isInt(),
     check('type').matches(/^[0-1]$/).withMessage('type must be 0 or 1'),
@@ -15,5 +16,22 @@ router.post('/setChargingStart',[
     check('time','time must be int').isInt(),
     check('energy','energy must be int').isInt()
 ],setChargingStart.post)
-router.post('/setChargingEnd',setChargingEnd.post)
+
+
+router.post('/setChargingEnd',[
+    check('deviceId','deviceId must be int ').isInt()
+],setChargingEnd.post)
+
+
+router.post('/getChargerStatus',[
+    check('deviceId','deviceId must be int ').isInt()
+],getChargerStatus.post)
+
+router.post('/getChargingInfo',[
+    check('deviceId','deviceId must be int ').isInt()
+],getChargingInfo.post)
+
+router.post('/getAllInfo',[
+    check('msgId').matches(/[a-zA-Z0-9]{8}/i).withMessage('msgId error'),
+],getAllInfo.post)
 module.exports = router;

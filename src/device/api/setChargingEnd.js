@@ -14,7 +14,7 @@ module.exports = function(client, next){
     // 检查设备是否授权
     if(isAuth(client)){
         let msgId = deviceData['data']['msgId'];
-        // rodo 此处响应需要判断是否含有此数据
+        // todo 此处响应需要判断是否含有此数据
         client.emit(msgId, deviceData)
     }else{
         client.write(packageErr(ERR_TYPE.DEFAULT),'please auth first!');

@@ -10,9 +10,9 @@ const has = require('lodash/has');
 const deviceRouter = require('./src/device/router'); //设备层路由
 const socketServer = new SocketServer({
     parserPath:function(data){
-        if(has(data,'reqType')){
-            debug(`path = ${data['reqType']}`);
-           return data['reqType']
+        if(has(data,'reqType') || has(data,'respType')){
+            debug(`path = ${data['reqType']} || ${data['respType']}`);
+           return data['reqType'] || data['respType']
         }else{
            return '/'
         }
