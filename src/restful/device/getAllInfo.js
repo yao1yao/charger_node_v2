@@ -1,4 +1,5 @@
 const {check,validationResult} = require('express-validator/check')
+const memWatch = require('../utils/memory_watch')
 exports.post = function(req,res,next){
     const result = validationResult(req).formatWith(({ location, msg, param, value, nestedErrors }) => {
         return `${msg}`;
@@ -7,7 +8,6 @@ exports.post = function(req,res,next){
         throw new Error(result.array().join())
     }
     let {socketServer} = req.app.locals
-    let {DeviceInfo} = socketServer.services.DB;
     let allAuthClientInfo = []
     let allAuthClient = socketServer.authClient
     console.log(allAuthClient)
@@ -15,16 +15,19 @@ exports.post = function(req,res,next){
         // todo::主要是避免获取原型上面的属性
         if(allAuthClient.hasOwnProperty(key)){
             let client = allAuthClient[key]
-            let clientInfo = {
-                illegal: true,
-                onTime: new Date(),
-                id: client.auth.id,
-                url: client.auth.notifyUrl,
-                ownerId: client.auth.ownerId,
-            }
+            let clientInfo = client.extendClient
+            clientInfo.reqTime = new Date()
+            clientInfo.mac = client.auth.mac
+            clientInfo.url = client.auth.notifyUrl
+            clientInfo.ownerId = client.auth.ownerId
+            clientInfo.id = client.auth.id
+            allAuthClientInfo.push(clientInfo)
         }
     }
-
+    res.json({
+        client: allAuthClientInfo,
+        memInfo: memWatch.getShowMemInfo()
+    })
 
     // let {DeviceInfo} = socketServer.services.DB;
     // let deviceId = parseInt(req.body.deviceId)

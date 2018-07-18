@@ -17,6 +17,9 @@ module.exports = function (client, next) {
         client.write(packageSuccess({
             "respType":deviceData.reqType,
         }))
+        // 更新 client extendClient 对象
+        let clientInfo = client.extendClient
+        clientInfo.ledStatus = deviceData.data.ledStatus
     } else {
         client.write(packageErr(ERR_TYPE.DEFAULT,'please auth first!'));
         client.destroy();

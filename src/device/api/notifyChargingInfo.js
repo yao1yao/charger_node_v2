@@ -18,7 +18,7 @@ module.exports = function (client, next) {
         client.write(packageSuccess({
             "respType":deviceData.reqType,
         }))
-        //todo::需要显示在日志输出控制台
+        // todo::需要显示在日志输出控制台
         // 获取 Id 即为当前设备 id 和 设备推送地址
         let {id,notifyUrl} = client.auth
         // 构造需要推送的数据
@@ -46,10 +46,14 @@ module.exports = function (client, next) {
         }
         debug(postData)
 
-        // 更新 socket 中的信息
+        // 更新 Client extendClient
+
+        let clientInfo = client.extendClient
+        clientInfo.chargingInfo.energy = deviceData.data.energy
+        clientInfo.chargingInfo.duration = deviceData.data.duration
+        clientInfo.chargingInfo.setDuration = deviceData.data.setDuration
+        clientInfo.chargingInfo.setEnergy = deviceData.data.setEnergy
         // 上报设备推送信息
-
-
         client.server.notify(id,postData,notifyUrl);
         next()
     } else {

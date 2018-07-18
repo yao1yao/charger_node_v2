@@ -43,6 +43,15 @@ module.exports = function (client, next) {
             "apiName": deviceData.reqType,
         }
         debug(postData)
+        // 重新初始化 client extendClient 对象
+        let clientInfo = client.extendClient
+        clientInfo.chargingInfo.userId = deviceData.data.userId
+        clientInfo.chargingInfo.energy = 0
+        clientInfo.chargingInfo.duration = 0
+        clientInfo.chargingInfo.setDuration = 0
+        clientInfo.chargingInfo.setEnergy = 0
+        clientInfo.runStatus = 4
+        clientInfo.ledStatus = 1
         // 上报设备推送信息
         client.server.notify(id , postData, notifyUrl);
         next()

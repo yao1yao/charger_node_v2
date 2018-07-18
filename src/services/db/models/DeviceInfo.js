@@ -100,7 +100,8 @@ module.exports=function(sequelize){
                 return sequelize.Promise.resolve({
                     notifyUrl: device.device_owner_info.notify_url,
                     id: device.id,
-                    ownerId: device.owner_id
+                    ownerId: device.owner_id,
+                    mac: device.mac
                 })
             }
         })
