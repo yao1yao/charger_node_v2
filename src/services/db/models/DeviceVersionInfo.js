@@ -3,7 +3,7 @@ module.exports = function(sequelize){
     const DeviceVersionInfo = sequelize.define('device_version_info',{
         version_sn: Sequelize.STRING(32),
         size: Sequelize.BIGINT,
-        checkSum: Sequelize.SMALLINT.UNSIGNED,
+        checksum: Sequelize.SMALLINT.UNSIGNED,
         description: Sequelize.TEXT
     },{
         // dont't add the timestamp attributes (updatedAt, createdAt)
@@ -26,5 +26,19 @@ module.exports = function(sequelize){
         // define the table's name
         tableName: 'device_version_info'
     })
+    DeviceVersionInfo.searchId = function(options){
+        let self = this;
+        return DeviceVersionInfo.findOne({
+            where:{
+                id : options.id
+            }
+        }).then(result=>{
+            if(result) {
+                return sequelize.Promise.resolve(result)
+            }else{
+                return sequelize.Promise.resolve(null)
+            }
+        })
+    }
     return DeviceVersionInfo
 }

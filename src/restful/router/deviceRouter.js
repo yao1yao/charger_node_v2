@@ -9,29 +9,45 @@ const setChargingEnd = require('../device/setChargingEnd')
 const getChargerStatus = require('../device/getChargerStatus')
 const getChargingInfo  = require('../device/getChargingInfo')
 const getAllInfo = require('../device/getAllInfo')
+/*切换版本*/
+const changeDeviceVersion = require('../device/changeDeviceVersion')
+
 router.post('/setChargingStart',[
     check('deviceId','deviceId must be int ').isInt(),
     check('type').matches(/^[0-1]$/).withMessage('type must be 0 or 1'),
     check('userId','userId must be int').isInt(),
     check('time','time must be int').isInt(),
-    check('energy','energy must be int').isInt()
+    check('energy','energy must be int').isInt(),
+    check('msgId').matches(/[a-zA-Z0-9]{8}/i).withMessage('msgId error'),
 ],setChargingStart.post)
 
 
 router.post('/setChargingEnd',[
-    check('deviceId','deviceId must be int ').isInt()
+    check('deviceId','deviceId must be int ').isInt(),
+    check('msgId').matches(/[a-zA-Z0-9]{8}/i).withMessage('msgId error'),
 ],setChargingEnd.post)
 
 
 router.post('/getChargerStatus',[
-    check('deviceId','deviceId must be int ').isInt()
+    check('deviceId','deviceId must be int ').isInt(),
+    check('msgId').matches(/[a-zA-Z0-9]{8}/i).withMessage('msgId error'),
 ],getChargerStatus.post)
 
 router.post('/getChargingInfo',[
-    check('deviceId','deviceId must be int ').isInt()
+    check('deviceId','deviceId must be int ').isInt(),
+    check('msgId').matches(/[a-zA-Z0-9]{8}/i).withMessage('msgId error'),
 ],getChargingInfo.post)
 
 router.post('/getAllInfo',[
     check('msgId').matches(/[a-zA-Z0-9]{8}/i).withMessage('msgId error'),
 ],getAllInfo.post)
+
+
+router.post('/changeDeviceVersion',[
+    check('msgId').matches(/[a-zA-Z0-9]{8}/i).withMessage('msgId error'),
+    check('ownerId','ownerId must be int ').isInt(),
+    check('deviceId','deviceId must be int ').isInt(),
+    check('oldVersionId','oldVersionId must be int ').isInt(),
+    check('newVersionId','newVersionId must be int ').isInt(),
+],changeDeviceVersion.post)
 module.exports = router;

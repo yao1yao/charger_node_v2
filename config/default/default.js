@@ -1,10 +1,12 @@
 const DB = require('./db');
 const OTA = require('./ota')
 const CLIENT_SERVER = require('./clientServer')
+const LOG = require('./log')
 
 module.exports = {
     DB,
     OTA,
+    LOG,
     CLIENT_SERVER,
 
     /*device 通道地址*/
