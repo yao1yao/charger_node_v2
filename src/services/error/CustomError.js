@@ -11,8 +11,9 @@ module.exports = class CustomError extends Error {
         super(message,...params)
 
         if(Error.captureStackTrace){
-            Error.captureStackTrace(this,customError)
+            Error.captureStackTrace(this, customError)
         }
+
         this.errCode = errType.code;
     }
 }

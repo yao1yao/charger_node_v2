@@ -29,7 +29,7 @@ module.exports.packageSuccess =
      * */
     function packageSuccess(data){
         let respSuccess = {
-            "reqType": data.respType,
+            "respType": data.respType,
             "data": {
                 "respCode": 100,
                 ...(data.data)

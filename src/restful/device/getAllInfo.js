@@ -10,7 +10,6 @@ exports.post = function(req,res,next){
     let {socketServer} = req.app.locals
     let allAuthClientInfo = []
     let allAuthClient = socketServer.authClient
-    console.log(allAuthClient)
     for(let key in allAuthClient){
         // todo::主要是避免获取原型上面的属性
         if(allAuthClient.hasOwnProperty(key)){
@@ -28,25 +27,5 @@ exports.post = function(req,res,next){
         client: allAuthClientInfo,
         memInfo: memWatch.getShowMemInfo()
     })
-
-    // let {DeviceInfo} = socketServer.services.DB;
-    // let deviceId = parseInt(req.body.deviceId)
-    // DeviceInfo.searchId({
-    //     id : parseInt(deviceId)
-    // }).then(result=>{
-    //     // 设备不存在
-    //     if(!result){
-    //         throw new Error('device did not found')
-    //     }else{
-    //         return socketServer.sendCommand(deviceId,{
-    //             "reqType": "getChargerStatus"
-    //         })
-    //     }
-    // }).then(data=>{
-    //     res.json(data)
-    //     next()
-    // }).catch(err=>{
-    //     res.json(err)
-    //     next()
-    // })
+    next()
 }

@@ -97,7 +97,6 @@ module.exports = class OTA extends EventEmitter {
             }
         )
     }
-
     /**
      * 获取 ota 文件句柄,对原生 node 文件 api 进行封装,
      * @param {String} filename 读取 ota 文件名

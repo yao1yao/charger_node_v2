@@ -6,8 +6,8 @@ const SocketServer = require('./sockets-server')
 const AppError = require('./src/services/error'); //错误处理服务
 const DB = require('./src/services/db');  //数据库服务
 const has = require('lodash/has');
-const OTA = require('./src/services/ota')
-//const OTA = require('./src/services/ota'); // ota 模块
+const OTA = require('./src/services/ota') // ota 服务
+const LOG = require('./src/services/log') // log 服务
 const deviceRouter = require('./src/device/router'); //设备层路由
 const socketServer = new SocketServer({
     parserPath:function(data){
@@ -26,9 +26,10 @@ const socketServer = new SocketServer({
 //socketServer.servers.AppError.throwFactory(CustomError,AppError.error)
 // 注入数据库服务，添加数据库配置项
  socketServer.service(new DB(config.DB))
-
 // 注入 ota 服务
  socketServer.service(new OTA(config.OTA))
+// 注入 log 服务
+ socketServer.service(new LOG(config.LOG))
 
 //实例化路由对象
 
@@ -43,6 +44,7 @@ const app = express();
 const bodyParser = require('body-parser')
 const router = require('./src/restful/router')
 const errHandle = require('./src/restful/middleware/errorHandle')
+const logHandle = require('./src/restful/middleware/logHandle')
 app.locals.socketServer = socketServer //将设备端服务绑定在 app 上
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended:false }))
@@ -50,6 +52,8 @@ app.use(bodyParser.urlencoded({ extended:false }))
 app.use(bodyParser.json())
 
 router(app)
+
+app.use(logHandle)
 
 app.use(errHandle)
 

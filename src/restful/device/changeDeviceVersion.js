@@ -25,6 +25,7 @@ exports.post = function(req,res,next){
     let {socketServer} = req.app.locals
     let {DeviceInfo,DeviceVersionInfo} = socketServer.services.DB;
     let serviceOTA = socketServer.services.OTA
+    let log = socketServer.services.LOG
     let deviceId = parseInt(req.body.deviceId)
     let newVersionId = parseInt(req.body.newVersionId)
     let oldVersionId = parseInt(req.body.oldVersionId)
@@ -36,7 +37,6 @@ exports.post = function(req,res,next){
         if(!versionInfo){
             throw new Error('version did not found')
         }else{
-            console.log(versionInfo)
             return socketServer.sendCommand(deviceId,{
                 "reqType": "setUpdateVersion",
                 "data":{

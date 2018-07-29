@@ -41,7 +41,7 @@ module.exports = function (client, next) {
                     // 授权成功处理
                     client.auth = auth;
                     client.write(packageSuccess({
-                        "respType":deviceData.reqType,
+                        "respType": deviceData.reqType,
                         "data": {
                             "meterNumber": "11111111"
                         }
