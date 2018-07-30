@@ -43,7 +43,7 @@ module.exports = function (client, next) {
                     client.write(packageSuccess({
                         "respType": deviceData.reqType,
                         "data": {
-                            "meterNumber": "11111111"
+                            "meterNumber": client.auth.meterNumber
                         }
                     }));
                     client.server.addAuthClient(client);
@@ -54,7 +54,6 @@ module.exports = function (client, next) {
                 }
             })
             .catch(err => {
-                console.log("123")
                 client.write(packageErr(ERR_TYPE.DEFAULT, err.message))
                 next();
             })

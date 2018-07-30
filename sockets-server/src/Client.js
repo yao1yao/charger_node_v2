@@ -43,7 +43,6 @@ module.exports = class Client extends  EventEmitter {
             },          // 当前设备充电信息
             ip: socket.remoteAddress
         }
-
         //初始化客户端
         this.setup();
     }

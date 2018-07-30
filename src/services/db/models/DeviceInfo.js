@@ -12,6 +12,7 @@ module.exports=function(sequelize){
             }
         },
         device_sn: Sequelize.STRING,
+        meter_number: Sequelize.STRING
     },{
         // don't add the timestamp attributes (updatedAt, createdAt)
         // 不要添加时间戳属性(updatedAt, createdAt)
@@ -102,7 +103,7 @@ module.exports=function(sequelize){
                     id: device.id,
                     ownerId: device.owner_id,
                     mac: device.mac,
-                    meter_number: device.meter_number
+                    meterNumber: device.meter_number
                 })
             }
         })

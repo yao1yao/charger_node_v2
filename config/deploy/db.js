@@ -1,6 +1,6 @@
-module.exports  = {
-        HOST: '120.79.4.73',
-        USER: 'YDUser',
-        PASSWORD: 'yd@2018',
-        NAME: 'test_plug'
-};
+module.exports = {
+    database: 'charger',
+    username: 'mysql-admin',
+    password: '111111',
+    host: '119.23.18.135'
+}

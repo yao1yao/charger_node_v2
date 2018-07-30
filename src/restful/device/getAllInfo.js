@@ -17,10 +17,11 @@ exports.post = function(req,res,next){
             let clientInfo = client.extendClient
             clientInfo.reqTime = new Date()
             clientInfo.mac = client.auth.mac
-            clientInfo.meterNumber = client.auth.meter_number
+            clientInfo.meterNumber = client.auth.meterNumber
             clientInfo.url = client.auth.notifyUrl
             clientInfo.ownerId = client.auth.ownerId
             clientInfo.id = client.auth.id
+            console.log(client.auth.meterNumber)
             allAuthClientInfo.push(clientInfo)
         }
     }
