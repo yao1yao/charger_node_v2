@@ -1,6 +1,6 @@
 {
-  "name": "ev_charger_v2",
-  "version": "0.0.0",
+  "name": "charger_node_v2",
+  "version": "0.0.1",
   "description": "new charger version",
   "main": "index.js",
   "eslintConfig": {
