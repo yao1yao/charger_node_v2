@@ -1,6 +1,6 @@
 const debug = require('debug')('socket:log')
 const {EventEmitter} = require('events')
-const fsPromises = require('fs').promises;
+const fsPromises = require('fs');
 const moment = require('moment')
 const os = require('os')
 const formatStr = 'YYYY.M.D-H:m:s.SSS'
