@@ -32,7 +32,7 @@ module.exports.packageSuccess =
             "respType": data.respType,
             "data": {
                 "respCode": 100,
-                ...(data.data)
+                "data":data.data
             }
         }
         return JSON.stringify(respSuccess)
