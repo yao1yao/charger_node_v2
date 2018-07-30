@@ -50,7 +50,8 @@ module.exports = class OTAUpload extends EventEmitter {
                 let description = nodePath.basename(name, '.bin');
 
                 return Promise.resolve({
-                    ...storeInfo,
+                    savePath:storeInfo.savePath,
+                    versionSN:storeInfo.versionSN,
                     versionSum,
                     description,
                     versionSize:size
