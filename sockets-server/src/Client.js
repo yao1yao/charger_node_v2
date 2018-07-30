@@ -24,7 +24,7 @@ module.exports = class Client extends  EventEmitter {
         this.clientId = socket.remoteAddress+":"+socket.remotePort;
         // 对每个实例对象都需要组装一个复合对象给 getAllInfo 使用
         this.extendClient = {
-            illegal: true,
+            illegal: false,
             onTime: new Date(), // todo:: 此处可以使用 moment 进行格式化
             reqTime: null, // 记录请求的接收时间
             ledStatus: 1, // 初始化灯的状态
