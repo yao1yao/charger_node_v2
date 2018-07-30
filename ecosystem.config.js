@@ -3,7 +3,9 @@ module.exports={
         name: 'charger_node_v2',
         script: 'index.js',
         env: {
-            NODE_ENV: 'development'
+            NODE_ENV: 'development',
+            NODE_CONFIG_DIR: './config/dev',
+            DEBUG: 'socket:*'
         },
         env_production: {
             NODE_ENV: 'production',
