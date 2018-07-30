@@ -39,11 +39,13 @@ exports.post = function(req,res,next){
                     // 返回保存行为
                     return deviceVersion.save().then(
                         ()=>{
-                            console.log("save success==========")
                             // 数据保存成功，返回设备版本上传成功命令
                             res.json({
-                                ...saveInfo,
-                                respCode: 100
+                                respCode: 100,
+                                version_sn: saveInfo.versionSN,
+                                size: saveInfo.versionSize,
+                                checksum: saveInfo.versionSum,
+                                description: saveInfo.description
                             })
                             next()
                         }
