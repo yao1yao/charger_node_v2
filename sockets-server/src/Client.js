@@ -30,6 +30,7 @@ module.exports = class Client extends  EventEmitter {
             ledStatus: 1, // 初始化灯的状态
             runStatus: 4, // 设备的运行状态
             mac: null, // 设备 mac 地址
+            meterNumber: null, // 设备电表编号
             url : null, // 设备的推送地址
             ownerId: null, // 目前设备所属厂商
             id: null, // 当前设备编号
