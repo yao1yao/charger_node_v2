@@ -28,7 +28,11 @@
     "db:reset": "scripts/table/reset_db.sh",
     "db:init": "scripts/table/init_db.sh",
     "db:recover": "npm run db:reset;npm run db:init;npm run db:seed",
-    "demo": "export DEBUG='socket:*';node demo.js"
+    "demo": "export DEBUG='socket:*';node demo.js",
+    "deploy:init": "pm2 deploy production setup",
+    "deploy": "pm2 deploy ecosystem.config.js production",
+    "deploy:dev_init": "pm2 deploy dev setup ",
+    "deploy:dev": "pm2 deploy ecosystem.config.js dev"
   },
   "keywords": [
     "socket",
