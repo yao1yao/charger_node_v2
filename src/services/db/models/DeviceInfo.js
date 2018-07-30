@@ -101,7 +101,8 @@ module.exports=function(sequelize){
                     notifyUrl: device.device_owner_info.notify_url,
                     id: device.id,
                     ownerId: device.owner_id,
-                    mac: device.mac
+                    mac: device.mac,
+                    meter_number: device.meter_number
                 })
             }
         })
