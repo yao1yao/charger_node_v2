@@ -10,9 +10,9 @@ module.exports = {
     /*设备升级文件存储位置*/
     // todo 项目 ota 文件应该在相同目录
     LOG_PATH: {
-        APP_ACCESS:path.join(__dirname,'../../tests/log/app_access.log'),
-        DEVICE_ACCESS:path.join(__dirname,'../../tests/log/device_access.log'),
-        ERROR_LOG:path.join(__dirname,'../../tests/log/error.log'),
-        EXCEPTION:path.join(__dirname,'../../tests/log/exception.log')
+        APP_ACCESS:path.join(__dirname,'/var/log/charger/app_access.log'),
+        DEVICE_ACCESS:path.join(__dirname,'/var/log/charger/device_access.log'),
+        ERROR_LOG:path.join(__dirname,'/var/log/charger/error.log'),
+        EXCEPTION:path.join(__dirname,'/var/log/charger/exception.log')
     }
 }
