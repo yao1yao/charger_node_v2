@@ -49,15 +49,11 @@ module.exports = class LOG extends EventEmitter{
             case "darwin":
                 resultData = logData  + '\r';
                 break;
-        }        fsPromises.appendFile(this.LOG_PATH.EXCEPTION, resultData).then(
-            (err)=>{
-                if(err){
-                    debug(err)
-                }else{
-                    debug('write success')
-                }
-            }
-        )
+        }
+        fsPromises.appendFile(this.LOG_PATH.EXCEPTION, resultData,function(err){
+            if(err) debug(err);
+            debug('write success')
+        })
     }
     /**
      * 构造需要 App 日志数据
