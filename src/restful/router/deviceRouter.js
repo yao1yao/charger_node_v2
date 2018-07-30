@@ -42,7 +42,6 @@ router.post('/getAllInfo',[
     check('msgId').matches(/[a-zA-Z0-9]{8}/i).withMessage('msgId error'),
 ],getAllInfo.post)
 
-
 router.post('/changeDeviceVersion',[
     check('msgId').matches(/[a-zA-Z0-9]{8}/i).withMessage('msgId error'),
     check('ownerId','ownerId must be int ').isInt(),

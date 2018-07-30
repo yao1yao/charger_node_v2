@@ -24,8 +24,12 @@ exports.post = function(req,res,next){
         }
     }
     res.json({
-        client: allAuthClientInfo,
-        memInfo: memWatch.getShowMemInfo()
+        respType: "getAllInfo",
+        data:{
+            client: allAuthClientInfo,
+            memInfo: memWatch.getShowMemInfo(),
+            respCode: 100
+        }
     })
     next()
 }

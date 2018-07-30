@@ -33,7 +33,7 @@ process.stdin.on('data', function(data){
         const notifyData = {
             "reqType":"notifyNewDevice",
             "data":{
-                "mac": "d640af4cc42e",
+                "mac": "024638b719a2",
                 "isReconnect": 0
             }
         }
