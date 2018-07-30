@@ -2,8 +2,8 @@ module.exports={
     apps: [{
         name: 'charger_node_v2',
         script: 'index.js',
-        env: {
-            NODE_ENV: 'development',
+        env_dev: {
+            NODE_ENV: 'dev',
             NODE_CONFIG_DIR: './config/dev',
             DEBUG: 'socket:*'
         },
