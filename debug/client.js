@@ -1,5 +1,5 @@
 const net = require('net');
-const port = 55552;
+const port = 11111;
 let quitting = false;
 let conn;
 let retryTimeout = 3000;    //三秒，定义三秒后重新连接
@@ -33,7 +33,7 @@ process.stdin.on('data', function(data){
         const notifyData = {
             "reqType":"notifyNewDevice",
             "data":{
-                "mac": "ffffffffffff",
+                "mac": "d640af4cc42e",
                 "isReconnect": 0
             }
         }

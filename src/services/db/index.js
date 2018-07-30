@@ -14,11 +14,11 @@ module.exports = class DB{
                 idle: 30000,
                 acquire: 6000
             },
-            host: options.host,
             database: options.database,
             username: options.username,
-            password: options.password
-        })
+            password: options.password,
+            host: options.host
+    })
         this.DeviceInfo = DeviceInfoConstructor(sequelize)
         this.DeviceOwnerInfo = DeviceOwnerInfoConstructor(sequelize)
         this.DeviceVersionInfo = DeviceVersionInfoConstructor(sequelize)
