@@ -1,3 +1,15 @@
+/**
+ * createNewVerison 创建版本软件软体
+ *
+ * 业务逻辑如下
+ *
+ * 1. 检查版本文件是否合法,包括
+ *    1.1 文件尺寸不大于 200KB
+ *    1.2 文件名称匹配正则表达式
+ *    1.3 文件已存在
+ * 2. 使用 md5file 生成文件名保存
+ * 3. 存储信息到 device_version_info 表中
+ */
 const {check,validationResult} = require('express-validator/check')
 const formidable = require('formidable')
 const debug = require('debug')('socket:createNewVersion')

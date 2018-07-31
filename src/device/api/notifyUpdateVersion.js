@@ -20,11 +20,12 @@ module.exports = function (client, next) {
             (buffer)=>{
                 // 将读取内容返回给设备
                 debug(buffer.length)
-                client.write(buffer)
+                client.socket.write(buffer)
                 next()
             }
         ).catch((err)=>{
             client.write(packageErr(ERR_TYPE.DEFAULT, err.message))
+            debug(err)
             next()
         })
     } else {
@@ -33,3 +34,4 @@ module.exports = function (client, next) {
         next();
     }
 }
+

@@ -39,77 +39,78 @@ process.stdin.on('data', function(data){
         }
         conn.write(JSON.stringify(notifyData))
     });
-    conn.on('data', function(data){
-        data = JSON.parse(data)
-        console.log(data)
-        if(data.reqType === "setChargingStart"){
-            sendData={
-                respType: data.reqType,
-                data:{
-                    msgId: data.data.msgId,
-                    respCode: 100
+    conn.on('data', function(chunk){
+        if(!isJsonString(chunk.toString())) {
+            console.log(chunk);
+        }else {
+            data = JSON.parse(chunk);
+            console.log(data);
+            if (data.reqType === "setChargingStart") {
+                sendData = {
+                    respType: data.reqType,
+                    data: {
+                        msgId: data.data.msgId,
+                        respCode: 100
+                    }
                 }
-            }
-            conn.write(JSON.stringify(sendData))
-        }else if(data.reqType === "setChargingEnd"){
-            sendData={
-                respType: data.reqType,
-                data:{
-                    msgId: data.data.msgId,
-                    respCode: 100
+                conn.write(JSON.stringify(sendData))
+            } else if (data.reqType === "setChargingEnd") {
+                sendData = {
+                    respType: data.reqType,
+                    data: {
+                        msgId: data.data.msgId,
+                        respCode: 100
+                    }
                 }
-            }
-            conn.write(JSON.stringify(sendData))
-        }else if(data.reqType === "getChargerStatus"){
-            sendData={
-                respType: data.reqType,
-                data:{
-                    msgId: data.data.msgId,
-                    respCode: 100,
-                    status: 1,
-                    connect: 0
+                conn.write(JSON.stringify(sendData))
+            } else if (data.reqType === "getChargerStatus") {
+                sendData = {
+                    respType: data.reqType,
+                    data: {
+                        msgId: data.data.msgId,
+                        respCode: 100,
+                        status: 1,
+                        connect: 0
+                    }
                 }
-            }
-            conn.write(JSON.stringify(sendData))
-        }else if(data.reqType === "getChargingInfo"){
-            sendData={
-                respType: data.reqType,
-                data:{
-                    msgId: data.data.msgId,
-                    respCode: 100,
-                    energy:1.2 ,
-                    voltage:230.34,
-                    current:4.312,
-                    power:12.1,
-                    duration:10,
-                    status:1,
-                    connect:0,
-                    setDuration:120,
-                    setEnergy:0
+                conn.write(JSON.stringify(sendData))
+            } else if (data.reqType === "getChargingInfo") {
+                sendData = {
+                    respType: data.reqType,
+                    data: {
+                        msgId: data.data.msgId,
+                        respCode: 100,
+                        energy: 1.2,
+                        voltage: 230.34,
+                        current: 4.312,
+                        power: 12.1,
+                        duration: 10,
+                        status: 1,
+                        connect: 0,
+                        setDuration: 120,
+                        setEnergy: 0
+                    }
                 }
-            }
-            conn.write(JSON.stringify(sendData))
-        }else if(data.reqType === "setUpdateVersion"){
-            sendData={
-                respType: data.reqType,
-                data:{
-                    msgId: data.data.msgId,
-                    respCode: 100,
+                conn.write(JSON.stringify(sendData))
+            } else if (data.reqType === "setUpdateVersion") {
+                sendData = {
+                    respType: data.reqType,
+                    data: {
+                        msgId: data.data.msgId,
+                        respCode: 100,
+                    }
                 }
-            }
-            conn.write(JSON.stringify(sendData))
-
-            sendData2 = {
-                respType: "notifyUpdateVersion",
-                data:{
-                    "versionSN": data.data.versionSN,
-                    "blockOffset": 3,
-                    "blockSize": 100
+                //conn.write(JSON.stringify(sendData))
+                sendData2 = {
+                    respType: "notifyUpdateVersion",
+                    data: {
+                        "versionSN": data.data.versionSN,
+                        "blockOffset": 3,
+                        "blockSize": 100
+                    }
                 }
-            }
-            setTimeout(function(){
                 conn.write(JSON.stringify(sendData2))
-            },3000)
+            }
         }
         //conn.write(JSON.stringify(data))
     })
@@ -130,3 +131,13 @@ process.stdin.on('data', function(data){
 // { "reqType":"notifyChargingInfo","data":{ "type":1,"energy":1.2,"voltage":230.34,"current":4.312,"power":12.1,"duration":10,"status":1,"connect":0,"setDuration":120,"setEnergy":0}}
 // { "reqType":"notifyEndCharging","data":{ "userId":1, "endType":1, "energy":12.4,"setEnergy":0,"duration":12,"setDuration":120,"status":1,"connect":0}}
 // { "reqType":"notifyHeartPackage","data":{"ledStatus": 6}}
+
+function isJsonString(str) {
+    try {
+        if (typeof JSON.parse(str) === "object") {
+            return true;
+        }
+    } catch (e) {
+    }
+    return false;
+}

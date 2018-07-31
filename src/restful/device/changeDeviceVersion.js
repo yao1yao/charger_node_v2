@@ -44,7 +44,7 @@ exports.post = function(req,res,next){
                     "oldVersionId": oldVersionId,
                     "newVersionId": newVersionId,
                     "versionSize": versionInfo.size,
-                    "checkSum": versionInfo.checksum
+                    "checkSum": parseInt(versionInfo.checksum)
                 }
             })
         }

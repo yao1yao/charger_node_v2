@@ -55,6 +55,7 @@ module.exports = class OTA extends EventEmitter {
     createHeader(buffer,offset,size) {
         let fixedHeader = new Buffer(14);
         let checkSum  = crc.crc16(buffer);
+
         fixedHeader.write('OTABIN',0);
         fixedHeader.writeUInt32BE(offset,6);
         fixedHeader.writeUInt16BE(size,10);
@@ -77,38 +78,21 @@ module.exports = class OTA extends EventEmitter {
         return  self._getOTAHandle(filename).then(
             (fd) => {
                 //important[locke] 这个地方的 buffer 应用会不会溢出
-                let Allbuffer = new Buffer(size);
-                return new Promise(function(resolve,reject){
-                    fs.read(fd, Allbuffer, 0, size, offset,function(err,bytesRead,buffer){
-                            if(err){
-                                debug(err)
-                            }
-                            let num = bytesRead
-                            if(size > num) {
-                                debug('read  file %s ,info $O ',filename,{
-                                    start: offset,
-                                    length: size,
-                                    realLength: num
-                                        });
-                                buffer = buffer.slice(0, num);
-                            }
-                            resolve(buffer)
-                    })
-                })
-                // return fsPromises.read(fd, buffer, 0, size, offset).then(
-                //     (obj) => {
-                //         let num = obj.bytesRead;
-                //         if(size > num) {
-                //             debug('read  file %s ,info $O ',filename,{
-                //                 start: offset,
-                //                 length: size,
-                //                 realLength: num
-                //             });
-                //             buffer = buffer.slice(0, num);
-                //         }
-                //         return Promise.resolve(buffer)
-                //     }
-                // )
+                let buffer = new Buffer(size);
+                return fsPromises.read(fd, buffer, 0, size, offset).then(
+                    (obj) => {
+                        let num = obj.bytesRead;
+                        if(size > num) {
+                            debug('read  file %s ,info $O ',filename,{
+                                start: offset,
+                                length: size,
+                                realLength: num
+                            });
+                            buffer = buffer.slice(0, num);
+                        }
+                        return Promise.resolve(buffer)
+                    }
+                )
             }
         )
     }
@@ -117,14 +101,11 @@ module.exports = class OTA extends EventEmitter {
      * @param {String} filename 读取 ota 文件名
      * @return {Promise} 返回文件句柄,详见 {@link http://nodejs.cn/api/fs.html#fs_fspromises_open_path_flags_mode|fsPromises.open}
      */
-    // _getOTAHandle(filename) {
-    //     return fsPromises.open(filename, 'r');
-    // }
     _getOTAHandle(filename) {
         return new Promise(function(resolve,reject){
             fs.open(filename,'r',function(err,fd){
                 if(err){
-                    debug(err)
+                    reject(err)
                 }else{
                     resolve(fd)
                 }
