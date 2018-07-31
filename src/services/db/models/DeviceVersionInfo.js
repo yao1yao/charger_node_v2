@@ -1,10 +1,11 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize){
     const DeviceVersionInfo = sequelize.define('device_version_info',{
+        owner_id: Sequelize.BIGINT,
         version_sn: Sequelize.STRING(32),
         size: Sequelize.BIGINT,
         checksum: Sequelize.SMALLINT.UNSIGNED,
-        description: Sequelize.TEXT
+        description: Sequelize.TEXT,
     },{
         // dont't add the timestamp attributes (updatedAt, createdAt)
         timestamps: false,

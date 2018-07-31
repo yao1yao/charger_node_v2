@@ -46,9 +46,8 @@ module.exports = class OTAUpload extends EventEmitter {
             ).then( (storeInfo) => {
                 //todo 此处可以封装为 promsie 对象加快速度
 
-                let versionSum = crc.crc16(fs.readFileSync(storeInfo.savePath));
+                let versionSum = crc.crc16(fs.readFileSync(storeInfo.savePath)).toString(16);
                 let description = nodePath.basename(name, '.bin');
-
                 return Promise.resolve({
                     savePath:storeInfo.savePath,
                     versionSN:storeInfo.versionSN,

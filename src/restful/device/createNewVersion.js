@@ -28,13 +28,15 @@ exports.post = function(req,res,next){
         if(err){
             next(err)
         }else{
+            let data = JSON.parse(fields.data)
             upload.storeOTA(files.file)
                 .then((saveInfo)=>{  // 保存成功执行数据库操作
                     let deviceVersion = DeviceVersionInfo.build({
+                        owner_id: data.ownerId,
                         version_sn: saveInfo.versionSN,
                         size: saveInfo.versionSize,
                         checksum: saveInfo.versionSum,
-                        description: saveInfo.description
+                        description: data.description,
                     });
                     // 返回保存行为
                     return deviceVersion.save().then(
@@ -55,6 +57,7 @@ exports.post = function(req,res,next){
                     )
                 }).catch((err)=>{
                     // todo 此处为了查询校验错误信息，可查看 debug()
+                    debug(err)
                     next(err)
             })
         }
