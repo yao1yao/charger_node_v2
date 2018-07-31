@@ -41,11 +41,14 @@ exports.post = function(req,res,next){
                         ()=>{
                             // 数据保存成功，返回设备版本上传成功命令
                             res.json({
-                                respCode: 100,
-                                version_sn: saveInfo.versionSN,
-                                size: saveInfo.versionSize,
-                                checksum: saveInfo.versionSum,
-                                description: saveInfo.description
+                                respType: 'createNewVersion',
+                                data: {
+                                    respCode: 100,
+                                    version_sn: saveInfo.versionSN,
+                                    size: saveInfo.versionSize,
+                                    checksum: saveInfo.versionSum,
+                                    description: saveInfo.description
+                                },
                             })
                             next()
                         }
@@ -56,5 +59,4 @@ exports.post = function(req,res,next){
             })
         }
     })
-
 }
