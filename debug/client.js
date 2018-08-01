@@ -42,6 +42,17 @@ process.stdin.on('data', function(data){
     conn.on('data', function(chunk){
         if(!isJsonString(chunk.toString())) {
             console.log(chunk);
+            setTimeout(function(){
+                sendData = {
+                    respType: "notifyOTAResult",
+                    data: {
+                        "result":0,
+                        "oldVersionId":1,
+                        "newVersionId":2
+                    }
+                }
+                conn.write(JSON.stringify(sendData))
+            },5000)
         }else {
             data = JSON.parse(chunk);
             console.log(data);
@@ -100,7 +111,7 @@ process.stdin.on('data', function(data){
                         respCode: 100,
                     }
                 }
-                //conn.write(JSON.stringify(sendData))
+                conn.write(JSON.stringify(sendData))
                 sendData2 = {
                     respType: "notifyUpdateVersion",
                     data: {
@@ -109,7 +120,9 @@ process.stdin.on('data', function(data){
                         "blockSize": 100
                     }
                 }
-                conn.write(JSON.stringify(sendData2))
+                setTimeout(function(){
+                    conn.write(JSON.stringify(sendData2))
+                },5000)
             }
         }
         //conn.write(JSON.stringify(data))

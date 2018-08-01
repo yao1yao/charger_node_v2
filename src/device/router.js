@@ -8,13 +8,13 @@ const notifyChargerStatus = require('./api/notifyChargerStatus')
 const notifyChargingInfo = require('./api/notifyChargingInfo')
 const notifyEndCharging = require('./api/notifyEndCharging')
 const notifyUpdateVersion = require('./api/notifyUpdateVersion')
+const notifyOTAResult = require('./api/notifyOTAResult')
 /*获取类*/
 const getChargerStatus = require('./api/getChargerStatus')
 const getChargingInfo = require('./api/getChargingInfo')
 
 /*OTA 有关*/
 const setUpdateVersion = require('./api/setUpdateVersion')
-
 module.exports = function(socketServer){
     socketServer.use('setChargingStart', setChargingStart); //发送开启充电命令
     socketServer.use('setChargingEnd',setChargingEnd); // 发送停止充电命令
@@ -30,4 +30,5 @@ module.exports = function(socketServer){
     socketServer.use('notifyChargingInfo',notifyChargingInfo) // 推送设备正在充电的信息
     socketServer.use('notifyEndCharging',notifyEndCharging)   // 推送设备结束充电信息
     socketServer.use('notifyUpdateVersion',notifyUpdateVersion) // 设备请求版本更新文件
+    socketServer.use('notifyOTAResult',notifyOTAResult)
 }
