@@ -26,7 +26,7 @@ module.exports={
             user: 'alfred',
             host: ["120.78.64.2"],
             repo: "/home/alfred/rep/charger_node_v2.git",
-            ref: "test_deploy/master",
+            ref: "origin/master",
             path: "/home/alfred/project/charger_node_v2",
             'post-deploy': "export PATH=$PATH:$HOME/.nvm/versions/node/v10.7.0/bin/ && npm install && pm2 reload ecosystem.config.js --env dev"
         },
