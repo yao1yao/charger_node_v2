@@ -15,6 +15,7 @@ module.exports = function(client, next){
     if(isAuth(client)){
         let msgId = deviceData['data']['msgId'];
         // rodo 此处响应需要判断是否含有此数据
+
         client.emit(msgId, deviceData)
     }else{
         client.write(packageErr(ERR_TYPE.DEFAULT),'please auth first!');
