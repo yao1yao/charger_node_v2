@@ -14,45 +14,54 @@
  * 1. 不存在该 ownerId
  * 2. 其他错误
  */
-const {check,validationResult} = require('express-validator/check')
-exports.post = function(req,res,next){
-    const result = validationResult(req).formatWith(({ location, msg, param, value, nestedErrors }) => {
+const {check, validationResult} = require('express-validator/check')
+exports.post = function (req, res, next) {
+    const result = validationResult(req).formatWith(({location, msg, param, value, nestedErrors}) => {
         return `${msg}`;
     });
     if (!result.isEmpty()) {
         throw new Error(result.array().join())
     }
     let {socketServer} = req.app.locals
-    let {DeviceInfo,DeviceVersionInfo} = socketServer.services.DB;
+    let {DeviceInfo, DeviceVersionInfo} = socketServer.services.DB;
     let serviceOTA = socketServer.services.OTA
     let log = socketServer.services.LOG
     let deviceId = parseInt(req.body.deviceId)
     let newVersionId = parseInt(req.body.newVersionId)
     let oldVersionId = parseInt(req.body.oldVersionId)
     let ownerId = parseInt(req.body.ownerId)
-    DeviceVersionInfo.searchId({
-        id : parseInt(newVersionId)
-    }).then(versionInfo=>{
-        // 版本文件不存在
-        if(!versionInfo){
-            throw new Error('version did not found')
-        }else{
-            return socketServer.sendCommand(deviceId,{
-                "reqType": "setUpdateVersion",
-                "data":{
-                    "versionSN": versionInfo.version_sn,
-                    "oldVersionId": oldVersionId,
-                    "newVersionId": newVersionId,
-                    "versionSize": versionInfo.size,
-                    "checkSum": parseInt(versionInfo.checksum,16)
-                }
-            })
+    DeviceInfo.searchId({
+        id: parseInt(deviceId)
+    }).then(result => {
+        if (!result) {
+            throw new Error('device did not found')
         }
-    }).then(data=>{
+    }).then(() => {
+        return DeviceVersionInfo.searchId({
+            id: parseInt(newVersionId)
+        }).then(versionInfo => {
+            if (!versionInfo) {
+                throw new Error('version did not found');
+            } else {
+                return versionInfo
+            }
+        })
+    }).then((versionInfo) => {
+        return socketServer.sendCommand(deviceId, {
+            "reqType": "setUpdateVersion",
+            "data": {
+                "versionSN": versionInfo.version_sn,
+                "versionNumber": versionInfo.version_number,
+                "oldVersionId": oldVersionId,
+                "newVersionId": newVersionId,
+                "versionSize": versionInfo.size,
+                "checkSum": parseInt(versionInfo.checksum, 16)
+            }
+        })
+    }).then(data => {
         res.json(data)
         next()
-    }).catch(err=>{
-        res.json(err)
-        next()
+    }).catch(err => {
+        next(err)
     })
 }

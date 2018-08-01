@@ -49,6 +49,7 @@ exports.post = function(req,res,next){
                         size: saveInfo.versionSize,
                         checksum: saveInfo.versionSum,
                         description: data.description,
+                        version_number: saveInfo.versionNumber
                     });
                     // 返回保存行为
                     return deviceVersion.save().then(
@@ -61,7 +62,9 @@ exports.post = function(req,res,next){
                                     version_sn: saveInfo.versionSN,
                                     size: saveInfo.versionSize,
                                     checksum: saveInfo.versionSum,
-                                    description: data.description,                                },
+                                    version_number: saveInfo.versionNumber,
+                                    description: data.description,
+                                },
                             })
                             next()
                         }

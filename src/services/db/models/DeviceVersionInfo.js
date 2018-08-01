@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize){
     const DeviceVersionInfo = sequelize.define('device_version_info',{
         owner_id: Sequelize.BIGINT,
+        version_number: Sequelize.STRING,
         version_sn: Sequelize.STRING(32),
         size: Sequelize.BIGINT,
         checksum: Sequelize.SMALLINT.UNSIGNED,
@@ -32,7 +33,7 @@ module.exports = function(sequelize){
         return DeviceVersionInfo.findOne({
             where:{
                 id : options.id
-            }
+            },
         }).then(result=>{
             if(result) {
                 return sequelize.Promise.resolve(result)

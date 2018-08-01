@@ -37,7 +37,6 @@ module.exports = class OTAUpload extends EventEmitter {
     storeOTA(fileInfo) {
         let {name,size,path} = fileInfo;
         let self = this;
-
         if(this.checkFile(name,size)) {
             return md5File(path).then(
                 hash => {
@@ -46,12 +45,12 @@ module.exports = class OTAUpload extends EventEmitter {
             ).then( (storeInfo) => {
                 //todo 此处可以封装为 promsie 对象加快速度
                 let versionSum = crc.crc16(fs.readFileSync(storeInfo.savePath)).toString(16);
-                let description = nodePath.basename(name, '.bin');
+                let versionNumber = nodePath.basename(name, '.bin');
                 return Promise.resolve({
                     savePath:storeInfo.savePath,
                     versionSN:storeInfo.versionSN,
                     versionSum,
-                    description,
+                    versionNumber,
                     versionSize:size
                 })
             })

@@ -27,7 +27,6 @@ exports.post = function(req,res,next){
         res.json(data)
         next()
     }).catch(err=>{
-        res.json(err)
-        next()
+        next(err)
     })
 }
