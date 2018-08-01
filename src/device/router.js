@@ -12,7 +12,7 @@ const notifyOTAResult = require('./api/notifyOTAResult')
 /*获取类*/
 const getChargerStatus = require('./api/getChargerStatus')
 const getChargingInfo = require('./api/getChargingInfo')
-
+const getCurVersion = require('./api/getCurVersion')
 /*OTA 有关*/
 const setUpdateVersion = require('./api/setUpdateVersion')
 module.exports = function(socketServer){
@@ -21,6 +21,7 @@ module.exports = function(socketServer){
 
     socketServer.use('getChargerStatus',getChargerStatus) // 发送获取设备状态命令
     socketServer.use('getChargingInfo',getChargingInfo) // 发送获取设备充电信息命令
+    socketServer.use('getCurVersion',getCurVersion) // 发送获取设备版本命令
 
     socketServer.use('setUpdateVersion',setUpdateVersion) // 设置更新版本
 

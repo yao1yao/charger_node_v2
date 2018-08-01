@@ -9,6 +9,7 @@ const setChargingEnd = require('../device/setChargingEnd')
 const getChargerStatus = require('../device/getChargerStatus')
 const getChargingInfo  = require('../device/getChargingInfo')
 const getAllInfo = require('../device/getAllInfo')
+const getCurVersion = require('../device/getCurVersion')
 /*切换版本*/
 const changeDeviceVersion = require('../device/changeDeviceVersion')
 
@@ -49,4 +50,10 @@ router.post('/changeDeviceVersion',[
     check('oldVersionId','oldVersionId must be int ').isInt(),
     check('newVersionId','newVersionId must be int ').isInt(),
 ],changeDeviceVersion.post)
+
+router.post('/getCurVersion',[
+    check('deviceId','deviceId must be int ').isInt(),
+    check('msgId').matches(/[a-zA-Z0-9]{8}/i).withMessage('msgId error'),
+],getCurVersion.post)
+
 module.exports = router;
