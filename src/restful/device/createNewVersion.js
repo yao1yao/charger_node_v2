@@ -61,8 +61,7 @@ exports.post = function(req,res,next){
                                     version_sn: saveInfo.versionSN,
                                     size: saveInfo.versionSize,
                                     checksum: saveInfo.versionSum,
-                                    description: saveInfo.description
-                                },
+                                    description: data.description,                                },
                             })
                             next()
                         }
