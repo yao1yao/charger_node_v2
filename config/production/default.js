@@ -10,10 +10,10 @@ module.exports = {
     CLIENT_SERVER,
 
     /*device 通道地址*/
-    SOCKET_PORT: 11111,
+    SOCKET_PORT: 55551,
 
     /*http 通道地址*/
-    SERVER_PORT: 11112,
+    SERVER_PORT: 55552,
 
     /*提醒间隔，默认为离是失效期的 7 天前*/
     REMINDER_INTERVAL: 7,
