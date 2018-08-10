@@ -73,8 +73,10 @@ module.exports = class Client extends  EventEmitter {
     destroy() {
         let clientId = this.clientId;
         let server = this.server;
-        //销毁 socket
+        // 销毁 socket
         this.socket.destroy();
+        // 销毁 getallinfo 信息
+        delete this.extendClient;
         //销毁缓存
         server.removeClient(clientId);
     }
