@@ -21,7 +21,6 @@ exports.post = function(req,res,next){
             clientInfo.url = client.auth.notifyUrl
             clientInfo.ownerId = client.auth.ownerId
             clientInfo.id = client.auth.id
-            console.log(client.auth.meterNumber)
             allAuthClientInfo.push(clientInfo)
         }
     }

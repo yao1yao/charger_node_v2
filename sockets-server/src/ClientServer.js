@@ -273,10 +273,10 @@ module.exports =  class ClientServer extends Server {
      * 删除客户端
      * @param {String} clientId
      */
-    removeClient(clientId) {
-        return delete this.client[clientId];
+    removeClient(clientId,authId) {
+       delete this.authClient[authId]
+       delete this.client[clientId];
     }
-
     /**
      *
      * @param {Object} socket,参见 {@link https://nodejs.org/docs/latest-v8.x/api/net.html#net_event_connection|Server connection 事件}
