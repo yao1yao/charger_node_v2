@@ -69,12 +69,12 @@ module.exports = class Client extends  EventEmitter {
     }
 
     destroy() {
-        let clientId = this.clientId;
-        let server = this.server;
-        let authId = this.auth.id
+        let self = this;
+        let clientId = self.clientId;
+        let server = self.server;
+        let authId = self.auth.id
         //销毁缓存
         server.removeClient(clientId,authId);
-        delete this;
     }
     /**
      * 委托 socket 发送客户端数据.
@@ -153,6 +153,9 @@ module.exports = class Client extends  EventEmitter {
         debug('close');
         // 删除当前 client 对象
         // 释放授权后的 client 对象
+        console.log("===================================")
+        console.log(this)
+        console.log("===================================")
         this.destroy();
     }
 

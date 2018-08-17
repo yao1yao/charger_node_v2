@@ -275,8 +275,8 @@ module.exports =  class ClientServer extends Server {
      * @param {String} authId
      */
     removeClient(clientId,authId) {
-       this.authClient[authId] = null;
-       return delete this.client[clientId];
+       delete this.authClient[authId]
+       delete this.client[clientId];
     }
     /**
      *
