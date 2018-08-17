@@ -66,20 +66,16 @@ module.exports = class Client extends  EventEmitter {
         this.socket.on('timeout',this._ontimeout);
         this.socket.on('close',this._onclose);
         this.socket.on('end',this._onend);
-
-
     }
 
     destroy() {
         let clientId = this.clientId;
         let server = this.server;
         let authId = this.auth.id
-        // 销毁 socket
-        this.socket.destroy();
         //销毁缓存
         server.removeClient(clientId,authId);
+        delete this;
     }
-
     /**
      * 委托 socket 发送客户端数据.
      * @param  {String} data
@@ -139,23 +135,33 @@ module.exports = class Client extends  EventEmitter {
 
     _onerror(err) {
         debug('error');
+        // 关闭 socket 套接字
         this.socket.destroy();
+        // 释放授权后的 client 对象
+        this.destroy();
     }
 
     _ontimeout() {
         debug('timeout');
-
+        // 关闭 socket 套接字
         this.socket.destroy();
+        // 释放授权后的 client 对象
+        this.destroy();
     }
 
     _onclose() {
         debug('close');
-        delete  this;
+        // 删除当前 client 对象
+        // 释放授权后的 client 对象
+        this.destroy();
     }
 
     _onend() {
         debug('end');
+        // 关闭当前套接字对象
         this.socket.destroy();
+        // 释放授权后的 client 对象
+        this.destroy();
     }
 
     /**
