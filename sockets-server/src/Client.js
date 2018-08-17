@@ -60,7 +60,7 @@ module.exports = class Client extends  EventEmitter {
         this._onclose = this._onclose.bind(this);
         this._onend = this._onend.bind(this);
 
-        this.socket.setTimeout(300000)
+        this.socket.setTimeout(120000)
         this.socket.on('data',this._ondata);
         this.socket.on('error',this._onerror);
         this.socket.on('timeout',this._ontimeout);
@@ -73,6 +73,8 @@ module.exports = class Client extends  EventEmitter {
         let clientId = self.clientId;
         let server = self.server;
         let authId = self.auth.id
+        // 断开 socket
+        this.socket.destroy();
         //销毁缓存
         server.removeClient(clientId,authId);
     }
@@ -135,8 +137,6 @@ module.exports = class Client extends  EventEmitter {
 
     _onerror(err) {
         debug('error');
-        // 关闭 socket 套接字
-        this.socket.destroy();
         // 释放授权后的 client 对象
         this.destroy();
     }
@@ -144,26 +144,16 @@ module.exports = class Client extends  EventEmitter {
     _ontimeout() {
         debug('timeout');
         // 关闭 socket 套接字
-        this.socket.destroy();
-        // 释放授权后的 client 对象
         this.destroy();
     }
 
     _onclose() {
         debug('close');
-        // 删除当前 client 对象
-        // 释放授权后的 client 对象
-        console.log("===================================")
-        console.log(this)
-        console.log("===================================")
         this.destroy();
     }
 
     _onend() {
         debug('end');
-        // 关闭当前套接字对象
-        this.socket.destroy();
-        // 释放授权后的 client 对象
         this.destroy();
     }
 
