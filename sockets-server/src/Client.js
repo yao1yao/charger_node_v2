@@ -60,13 +60,14 @@ module.exports = class Client extends  EventEmitter {
         this._onclose = this._onclose.bind(this);
         this._onend = this._onend.bind(this);
 
-        this.socket.setTimeout(60000)
+        this.socket.setTimeout(80000)
         this.socket.on('data',this._ondata);
         this.socket.on('error',this._onerror);
         this.socket.on('timeout',this._ontimeout);
         this.socket.on('close',this._onclose);
         this.socket.on('end',this._onend);
     }
+
     destroy() {
         let self = this;
         let clientId = self.clientId;
@@ -137,7 +138,7 @@ module.exports = class Client extends  EventEmitter {
     _onerror(err) {
         debug('error');
         // 释放授权后的 client 对象
-        this.destroy();
+        this.socket.destroy();
     }
 
     _ontimeout() {
