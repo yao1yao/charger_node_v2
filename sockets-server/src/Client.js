@@ -74,9 +74,13 @@ module.exports = class Client extends  EventEmitter {
         let server = self.server;
         let authId = self.auth.id
         // 断开 socket
-        this.socket.destroy();
-        //销毁缓存
-        server.removeClient(clientId,authId);
+        self.socket.destroy();
+        // 用来指示连接是否已经被销毁，一旦连接被销毁就不能再使用它传输任何数据
+        let b = self.socket.destroyed;
+        if(b) {
+            //移除授权后的 client 对象
+            server.removeClient(clientId, authId);
+        }
     }
     /**
      * 委托 socket 发送客户端数据.
@@ -138,7 +142,7 @@ module.exports = class Client extends  EventEmitter {
     _onerror(err) {
         debug('error');
         // 释放授权后的 client 对象
-        this.socket.destroy();
+        this.destroy();
     }
 
     _ontimeout() {
