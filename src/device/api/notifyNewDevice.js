@@ -14,12 +14,12 @@ module.exports = function (client, next) {
     let  ERR_TYPE = client.server.services.AppError.constructor.error;
     if (isAuth(client)) {
         // 已授权设备判断是否重连请求
-        let isReconnect = deviceData['data']['reconnect']
+        let isReconnect = deviceData['data']['isReconnect']
         if (isReconnect) {
             // 删除客户端
             debug('reconnect success!')
             client.Alldestroy();
-            return next();
+            next();
         } else {
             // 非重连抛出错误
             // 告知设备重复连接
