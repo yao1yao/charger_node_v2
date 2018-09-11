@@ -16,7 +16,8 @@ module.exports = function(client, next){
         let msgId = deviceData['data']['msgId'];
         // todo 此处响应需要判断是否含有此数据
         client.emit(msgId, deviceData)
-        client.destory();
+        client.socket.destory();
+        next();
     }else{
         client.write(packageErr(ERR_TYPE.DEFAULT),'please auth first!');
         client.destory();
