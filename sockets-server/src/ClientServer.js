@@ -268,12 +268,21 @@ module.exports =  class ClientServer extends Server {
     }
 
     /**
-     * 删除授权后的客户端
-     * @param {String} authId
+     * 删除未授权的客户端
+     * @param {Number} clientId
      */
-    removeClient(authId) {
-       delete this.authClient[authId];
+    removeClient(clientId) {
+       delete this.client[clientId];
        return true;
+    }
+
+    /**
+     * 删除授权后的客户端
+     */
+    removeAuthClient(authId,clientId) {
+        delete this.authClient[authId];
+        delete this.client[clientId];
+        return true;
     }
     /**
      *
@@ -282,9 +291,6 @@ module.exports =  class ClientServer extends Server {
      */
     _onconnection(socket) {
         let self = this;
-        this.log.deviceLogHandler("===============================")
-        this.log.deviceLogHandler(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-        this.log.deviceLogHandler("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>")
         this.manageConnectNumber(function (err) {
             if(err) {
                 //todo 此处连接限制需要上报

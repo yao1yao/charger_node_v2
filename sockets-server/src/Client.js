@@ -60,7 +60,7 @@ module.exports = class Client extends  EventEmitter {
         this._onclose = this._onclose.bind(this);
         this._onend = this._onend.bind(this);
 
-        this.socket.setTimeout(120000)
+        this.socket.setTimeout(2000)
         // 监听到数据发送
         this.socket.on('data',this._ondata);
         // 监听到错误
@@ -124,19 +124,33 @@ module.exports = class Client extends  EventEmitter {
         server.emit('clientData',this);
     }
 
-    // 关闭套接字及移除授权对象
+    /**
+     * 关闭套接字，移除未授权对象
+     */
     destroy() {
+        let clientId = this.clientId;
         let server = this.server;
-        let authId = this.auth.id;
-        // 断开 socket
+        // 销毁 socket
         this.socket.destroy();
+        // 销毁缓存
+        server.removeClient(clientId);
+    }
+
+    // 关闭套接字及移除授权对象
+    Alldestroy() {
+        let server = this.server;
+        let clientId = this.clientId
+        this.socket.destroy();
+        // 断开 socket
         if(this.socket.destroyed) {
-            server.removeClient(authId);
-            delete this;
-            setTimeout(function(){
-                console.log(this.extendClient)
-            },1000)
+            if(typeof(this.auth)==="undefined"){
+               server.removeClient(clientId);
+            }else{
+                let authId = this.auth.id;
+               server.removeAuthClient(authId, clientId);
+            }
         }
+        delete this;
     }
     _onerror(err) {
         debug('error');
@@ -145,24 +159,17 @@ module.exports = class Client extends  EventEmitter {
     }
     _ontimeout() {
         debug('timeout');
-        this.destroy();
+        this.Alldestroy();
     }
     _onclose() {
         debug('close')
-        let self = this;
-        let server = self.server;
-        let authId = self.auth.id;
-        let flag = server.removeClient(authId);
-        if(flag) {
-            delete this;
-        }
+        this.Alldestroy();
     }
     _onend() {
         debug('end');
         //console.log("123")
         //this.socket.destroy();
     }
-
     /**
      * 设备的超时等待处理函数
      * @private
@@ -180,7 +187,6 @@ module.exports = class Client extends  EventEmitter {
             },WAIT_OVERTIME)
         });
     }
-
     /**
      * 绑定发送命令的响应回调
      * @param {String} msgId 监听的消息 id
