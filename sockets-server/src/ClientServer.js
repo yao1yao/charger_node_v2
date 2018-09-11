@@ -272,17 +272,15 @@ module.exports =  class ClientServer extends Server {
      * @param {Number} clientId
      */
     removeClient(clientId) {
-       delete this.client[clientId];
-       return true;
+       return delete this.client[clientId];
     }
 
     /**
      * 删除授权后的客户端
      */
     removeAuthClient(authId,clientId) {
-        delete this.authClient[authId];
         delete this.client[clientId];
-        return true;
+        return delete this.authClient[authId];
     }
     /**
      *
@@ -318,7 +316,7 @@ module.exports =  class ClientServer extends Server {
         let router = client.server._router;
         debug('receive clientData event!');
         //无需在注入回调
-        //记录 devie-data 设备发送的消息
+        //记录 devie-data 设备发送的消息，写入日志
         let logData = {
             clientIp: client.socket.remoteAddress,
             clientId: client.hasOwnProperty("auth")?client.auth.id:'-',

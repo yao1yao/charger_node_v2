@@ -133,7 +133,9 @@ module.exports = class Client extends  EventEmitter {
         // 销毁 socket
         this.socket.destroy();
         // 销毁缓存
-        server.removeClient(clientId);
+        if(this.socket.destroyed) {
+            server.removeClient(clientId);
+        }
     }
 
     // 关闭套接字及移除授权对象
@@ -143,10 +145,11 @@ module.exports = class Client extends  EventEmitter {
         this.socket.destroy();
         // 断开 socket
         if(this.socket.destroyed) {
+            // 未授权连接着
             if(typeof(this.auth)==="undefined"){
                server.removeClient(clientId);
             }else{
-                let authId = this.auth.id;
+               let authId = this.auth.id;
                server.removeAuthClient(authId, clientId);
             }
         }

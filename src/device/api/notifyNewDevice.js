@@ -18,7 +18,7 @@ module.exports = function (client, next) {
         if (isReconnect) {
             // 删除客户端
             debug('reconnect success!')
-            client.destroy();
+            client.Alldestroy();
             return next();
         } else {
             // 非重连抛出错误
