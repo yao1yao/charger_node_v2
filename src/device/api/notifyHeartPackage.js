@@ -20,6 +20,7 @@ module.exports = function (client, next) {
         // 更新 client extendClient 对象
         let clientInfo = client.extendClient
         clientInfo.ledStatus = deviceData.data.ledStatus
+        client.destroy();
     } else {
         client.write(packageErr(ERR_TYPE.DEFAULT,'please auth first!'));
         client.destroy();

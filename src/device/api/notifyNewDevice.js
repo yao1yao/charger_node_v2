@@ -29,7 +29,6 @@ module.exports = function (client, next) {
     } else {
         // 未授权执行授权操作
         let {DeviceInfo, DeviceVersion, DeviceOwner} = client.server.services.DB;
-
         // 基于新数据创建新的实例
         let deviceInfo = DeviceInfo.build(deviceData.data)
         deviceInfo.validate()
