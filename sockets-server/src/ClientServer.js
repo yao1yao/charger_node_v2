@@ -61,8 +61,6 @@ module.exports =  class ClientServer extends Server {
         this.connectNum = 0;
         //服务器最大连接数量
         this.MAX_CONNECTIONS = (config && config.MAX_CONNECTIONS)  || 100;
-        //
-
         //初始设定 clientServer
         this.setup();
         this.log = new LOG(logConfig.LOG)

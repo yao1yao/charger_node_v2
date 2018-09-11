@@ -1,6 +1,6 @@
 const  EventEmitter = require('events');
 const  shortId = require('shortid');
-const HashIds =  require('hashids');
+const  HashIds =  require('hashids');
 const  debug = require('debug')('socket:client');
 
 /**
@@ -52,15 +52,15 @@ module.exports = class Client extends  EventEmitter {
      * 'data', 'error', 'close', 'timeout','end'
      */
     setup() {
-        //由于事件为异步,在执行回调时,this 指向 socket 而非 client 对象
-        //所以需要绑定 this 为 client 防止 this 丢失
+        // 由于事件为异步,在执行回调时,this 指向 socket 而非 client 对象
+        // 所以需要绑定 this 为 client 防止 this 丢失
         this._ondata = this._ondata.bind(this);
         this._onerror = this._onerror.bind(this);
         this._ontimeout = this._ontimeout.bind(this);
         this._onclose = this._onclose.bind(this);
         this._onend = this._onend.bind(this);
 
-        this.socket.setTimeout(80000)
+        this.socket.setTimeout(120000)
         // 监听到数据发送
         this.socket.on('data',this._ondata);
         // 监听到错误
@@ -91,8 +91,6 @@ module.exports = class Client extends  EventEmitter {
         });
 
     }
-
-
     /**
      * 发送控制命令,必须等待返回值.
      * @param {Object} data json 对象.
@@ -119,37 +117,38 @@ module.exports = class Client extends  EventEmitter {
         return hashIds.encode(1);
     }
 
-
     _ondata(data) {
         let server = this.server;
         this.rawData = data;
         debug(`${this.clientId} send data: ${data}`);
         server.emit('clientData',this);
     }
+
+    // 关闭套接字及移除授权对象
     destroy() {
         let server = this.server;
         let authId = this.auth.id;
         // 断开 socket
-        let flag = server.removeClient(authId);
-        if(flag) {
-            this.socket.destroy();
+        this.socket.destroy();
+        if(this.socket.destroyed) {
+            server.removeClient(authId);
             delete this;
+            setTimeout(function(){
+                console.log(this.extendClient)
+            },1000)
         }
     }
-
     _onerror(err) {
         debug('error');
         // 释放授权后的 client 对象
-        this.destroy();
+        //this.socket.destroy();
     }
-
     _ontimeout() {
         debug('timeout');
-        // 关闭 socket 套接字
         this.destroy();
     }
-
     _onclose() {
+        debug('close')
         let self = this;
         let server = self.server;
         let authId = self.auth.id;
@@ -158,10 +157,10 @@ module.exports = class Client extends  EventEmitter {
             delete this;
         }
     }
-
     _onend() {
         debug('end');
-        this.destroy();
+        //console.log("123")
+        //this.socket.destroy();
     }
 
     /**
