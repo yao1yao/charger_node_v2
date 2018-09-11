@@ -61,27 +61,16 @@ module.exports = class Client extends  EventEmitter {
         this._onend = this._onend.bind(this);
 
         this.socket.setTimeout(80000)
+        // 监听到数据发送
         this.socket.on('data',this._ondata);
+        // 监听到错误
         this.socket.on('error',this._onerror);
         this.socket.on('timeout',this._ontimeout);
         this.socket.on('close',this._onclose);
         this.socket.on('end',this._onend);
     }
 
-    destroy() {
-        let self = this;
-        let clientId = self.clientId;
-        let server = self.server;
-        let authId = self.auth.id
-        // 断开 socket
-        self.socket.destroy();
-        // 用来指示连接是否已经被销毁，一旦连接被销毁就不能再使用它传输任何数据
-        let b = self.socket.destroyed;
-        if(b) {
-            //移除授权后的 client 对象
-            server.removeClient(clientId, authId);
-        }
-    }
+
     /**
      * 委托 socket 发送客户端数据.
      * @param  {String} data
@@ -122,7 +111,6 @@ module.exports = class Client extends  EventEmitter {
         return  Promise.race([this._waitOverTime(msgId),this._bindCommand(msgId)])
     }
 
-
     /**
      * 生成唯一的 msgId.
      */
@@ -138,6 +126,16 @@ module.exports = class Client extends  EventEmitter {
         debug(`${this.clientId} send data: ${data}`);
         server.emit('clientData',this);
     }
+    destroy() {
+        let server = this.server;
+        let authId = this.auth.id;
+        // 断开 socket
+        let flag = server.removeClient(authId);
+        if(flag) {
+            this.socket.destroy();
+            delete this;
+        }
+    }
 
     _onerror(err) {
         debug('error');
@@ -152,8 +150,13 @@ module.exports = class Client extends  EventEmitter {
     }
 
     _onclose() {
-        debug('close');
-        this.destroy();
+        let self = this;
+        let server = self.server;
+        let authId = self.auth.id;
+        let flag = server.removeClient(authId);
+        if(flag) {
+            delete this;
+        }
     }
 
     _onend() {
