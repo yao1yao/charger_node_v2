@@ -284,6 +284,9 @@ module.exports =  class ClientServer extends Server {
      */
     _onconnection(socket) {
         let self = this;
+        this.log.deviceLogHandler("===============================")
+        this.log.deviceLogHandler(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        this.log.deviceLogHandler("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>")
         this.manageConnectNumber(function (err) {
             if(err) {
                 //todo 此处连接限制需要上报
