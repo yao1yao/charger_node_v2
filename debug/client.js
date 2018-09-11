@@ -144,7 +144,8 @@ process.stdin.on('data', function(data){
 // { "reqType":"notifyChargingInfo","data":{ "type":1,"energy":1.2,"voltage":230.34,"current":4.312,"power":12.1,"duration":10,"status":1,"connect":0,"setDuration":120,"setEnergy":0}}
 // { "reqType":"notifyEndCharging","data":{ "userId":1, "endType":1, "energy":12.4,"setEnergy":0,"duration":12,"setDuration":120,"status":1,"connect":0}}
 // { "reqType":"notifyHeartPackage","data":{"ledStatus": 6}}
-// { "reqType":"notifyNewDevice","data":{"mac": 32468efd3f50, "isReconnect": 1}}
+// { "reqType":"notifyNewDevice","data":{"mac": 32468efd3f50, "isReconnect":0}}
+// { "reqType":"notifyNewDevice","data":{"mac":"32468efd3f50","isReconnect":1}}
 
 
 function isJsonString(str) {
