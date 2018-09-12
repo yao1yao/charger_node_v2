@@ -39,13 +39,13 @@ module.exports = class LOG extends EventEmitter{
         let resultData = ''
         switch (os.platform()){
             case "linux":
-                resultData= logData + '\n';
+                resultData= logData+"  "+new Date() + '\n';
                 break;
             case "win32":
-                resultData = logData + '\r\n';
+                resultData = logData+"  "+new Date() + '\n';
                 break;
             case "darwin":
-                resultData = logData  + '\r';
+                resultData = logData+"  "+new Date() + '\n';
                 break;
         }
         fsPromises.appendFile(this.LOG_PATH.EXCEPTION, resultData,function(err){
