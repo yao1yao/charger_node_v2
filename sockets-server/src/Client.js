@@ -154,6 +154,7 @@ module.exports = class Client extends  EventEmitter {
             }
         }
         delete this.auth;
+        delete this.extendClient;
     }
     _onerror(err) {
         debug('error');
