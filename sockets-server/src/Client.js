@@ -2,7 +2,7 @@ const  EventEmitter = require('events');
 const  shortId = require('shortid');
 const  HashIds =  require('hashids');
 const  debug = require('debug')('socket:client');
-
+const  LOG = require('../../src/services/log')
 /**
  * 客户端模块
  * @module Client.
@@ -153,23 +153,27 @@ module.exports = class Client extends  EventEmitter {
                server.removeAuthClient(authId, clientId);
             }
         }
-        delete this;
+        delete this.auth;
     }
     _onerror(err) {
         debug('error');
+        this.server.log.ExceptionLogHandler(err)
         // 释放授权后的 client 对象
         //this.socket.destroy();
     }
     _ontimeout() {
         debug('timeout');
+        this.server.log.ExceptionLogHandler("timeout event for destory")
         this.Alldestroy();
     }
     _onclose() {
         debug('close')
+        this.server.log.ExceptionLogHandler("close event for destory")
         this.Alldestroy();
     }
     _onend() {
         debug('end');
+        this.server.log.ExceptionLogHandler("onend event for destory")
         //console.log("123")
         //this.socket.destroy();
     }

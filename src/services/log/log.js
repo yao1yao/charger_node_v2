@@ -26,7 +26,6 @@ module.exports = class LOG extends EventEmitter{
         let writeData = this.createAppLogData(req,resp,label)
         fsPromises.appendFile(this.LOG_PATH.APP_ACCESS,writeData,function(err){
             if(err) debug(err);
-            debug('write success')
         })
 
     }
@@ -34,7 +33,6 @@ module.exports = class LOG extends EventEmitter{
         let writeData = this.createDeviceLogData(logData)
         fsPromises.appendFile(this.LOG_PATH.DEVICE_ACCESS, writeData,function(err){
             if(err) debug(err);
-            debug('write success')
         })
     }
     ExceptionLogHandler(logData){
@@ -52,7 +50,6 @@ module.exports = class LOG extends EventEmitter{
         }
         fsPromises.appendFile(this.LOG_PATH.EXCEPTION, resultData,function(err){
             if(err) debug(err);
-            debug('write success')
         })
     }
     /**
