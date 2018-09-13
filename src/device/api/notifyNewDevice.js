@@ -17,7 +17,6 @@ module.exports = function (client, next) {
         let isReconnect = deviceData['data']['isReconnect']
         if (isReconnect) {
             // 删除客户端
-            debug('reconnect success!')
             client.Alldestroy();
             next();
         } else {

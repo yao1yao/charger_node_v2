@@ -13,6 +13,7 @@ module.exports = function (client, next) {
     // 拉取错误服务
     let  ERR_TYPE = client.server.services.AppError.constructor.error;
     if (isAuth(client)) {
+        debug(`client ${client}`);
         // 检查设备是否授权
         client.write(packageSuccess({
             "respType":deviceData.reqType,
