@@ -116,67 +116,42 @@ module.exports = class Client extends  EventEmitter {
         let hashIds = new HashIds(shortId.generate(),8);
         return hashIds.encode(1);
     }
-
     _ondata(data) {
         let server = this.server;
         this.rawData = data;
         debug(`${this.clientId} send data: ${data}`);
         server.emit('clientData',this);
     }
-
-    /**
-     * 关闭套接字，移除未授权对象
-     */
-    destroy() {
-        let clientId = this.clientId;
-        let server = this.server;
-        // 销毁 socket
-        this.socket.destroy();
-        // 销毁缓存
-        if(this.socket.destroyed) {
-            server.removeClient(clientId);
-        }
-    }
-
-    // 关闭套接字及移除授权对象
-    Alldestroy() {
-        let server = this.server;
-        let clientId = this.clientId
-        this.socket.destroy();
-        // 断开 socket
-        if(this.socket.destroyed) {
-            // 未授权连接着
-            if(typeof(this.auth)==="undefined"){
-               server.removeClient(clientId);
-            }else{
-               let authId = this.auth.id;
-               server.removeAuthClient(authId, clientId);
-            }
-            delete this.auth;
-            delete this.extendClient;
-        }
-    }
     _onerror(err) {
         debug(err);
-        this.server.log.ExceptionLogHandler(err)
+        this.server.log.ExceptionLogHandler(err.stack)
         // 释放授权后的 client 对象
-        //this.socket.destroy();
+        // this.socket.destroy();
     }
     _ontimeout() {
         debug('timeout');
-        this.server.log.ExceptionLogHandler("timeout event for destory")
-        this.Alldestroy();
+        this.server.log.ExceptionLogHandler(`${this.server} timeout event for destory`)
+        //this.Alldestroy();
+        this.socket.destroy();
     }
     _onclose() {
         debug('close')
-        this.server.log.ExceptionLogHandler("close event for destory")
-        this.Alldestroy();
+        this.server.log.ExceptionLogHandler(`${this.server} close event for destory`)
+        if(this.socket.destroyed){
+            let server = this.server;
+            let clientId = this.clientId
+            if(typeof(this.auth)==='undefined'){
+                server.removeClient(clientId)
+            }else {
+                let authId = this.auth.id;
+                server.removeAuthClient(authId, clientId);
+                delete this.auth;
+            }
+        }
     }
     _onend() {
         debug('end');
         this.server.log.ExceptionLogHandler("onend event for destory")
-        //console.log("123")
-        //this.socket.destroy();
     }
     /**
      * 设备的超时等待处理函数

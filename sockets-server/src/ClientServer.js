@@ -274,7 +274,6 @@ module.exports =  class ClientServer extends Server {
     removeClient(clientId) {
        return delete this.client[clientId];
     }
-
     /**
      * 删除授权后的客户端
      */

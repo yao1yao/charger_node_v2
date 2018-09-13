@@ -50,8 +50,6 @@
 
 // {"apiId":1,"versionSN":"e1bd333f7d3de8c652b97e4d5adc55ea","mac":"ffffffffffff","reconnect":0}
 // {"msgId":"11111111","apiId":21,"respCode":100}
-console.log(process.env.NODE_ENV)
-auth={};
-if(auth){
-
+if(typeof(a)==='undefined'){
+    console.log(1)
 }
