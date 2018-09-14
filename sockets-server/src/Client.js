@@ -125,18 +125,20 @@ module.exports = class Client extends  EventEmitter {
     _onerror(err) {
         debug(err);
         this.server.log.ExceptionLogHandler(err.stack)
-        // 释放授权后的 client 对象
-        // this.socket.destroy();
+        //  关闭套接字
+        this.socket.destroy();
     }
     _ontimeout() {
         debug('timeout');
-        this.server.log.ExceptionLogHandler(`${this.server} timeout event for destory`)
-        //this.Alldestroy();
+        this.server.log.ExceptionLogHandler(`${JSON.stringify(this)} timeout event for destory`)
+        // 关闭套接字
         this.socket.destroy();
+
     }
+
     _onclose() {
         debug('close')
-        this.server.log.ExceptionLogHandler(`${this.server} close event for destory`)
+        this.server.log.ExceptionLogHandler(`${JSON.stringify(this)} close event for destory`)
         if(this.socket.destroyed){
             let server = this.server;
             let clientId = this.clientId
@@ -146,12 +148,13 @@ module.exports = class Client extends  EventEmitter {
                 let authId = this.auth.id;
                 server.removeAuthClient(authId, clientId);
                 delete this.auth;
+                this.server.log.ExceptionLogHandler(`${JSON.stringify(this)} delete auth for destory`)
             }
         }
     }
     _onend() {
         debug('end');
-        this.server.log.ExceptionLogHandler("onend event for destory")
+        this.server.log.ExceptionLogHandler(`${JSON.stringify(this)} onend  for destory`)
     }
     /**
      * 设备的超时等待处理函数
