@@ -17,7 +17,7 @@ module.exports = function (client, next) {
         let isReconnect = deviceData['data']['isReconnect']
         if (isReconnect) {
             // 删除客户端
-            client.socket.destroy();
+            client.destroy();
             next();
         } else {
             // 非重连抛出错误

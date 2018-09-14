@@ -60,7 +60,7 @@ module.exports = class Client extends  EventEmitter {
         this._onclose = this._onclose.bind(this);
         this._onend = this._onend.bind(this);
 
-        this.socket.setTimeout(200000);
+        this.socket.setTimeout(240000);
         // 监听到数据发送
         this.socket.on('data',this._ondata);
         // 监听到错误
@@ -108,7 +108,9 @@ module.exports = class Client extends  EventEmitter {
         this.write(JSON.stringify(sendData));
         return  Promise.race([this._waitOverTime(msgId),this._bindCommand(msgId)])
     }
-
+    destory(){
+        this.socket.destory();
+    }
     /**
      * 生成唯一的 msgId.
      */
@@ -135,8 +137,7 @@ module.exports = class Client extends  EventEmitter {
         this.socket.destroy();
 
     }
-
-    _onclose() {
+    _onclose(had_error) {
         debug('close')
         this.server.log.ExceptionLogHandler(`${JSON.stringify(this)} close event for destory`)
         if(this.socket.destroyed){

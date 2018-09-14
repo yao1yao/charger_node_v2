@@ -120,7 +120,6 @@ module.exports =  class ClientServer extends Server {
         this.authClient[id] = client;
         this.emit('newAuthClient',client);
     }
-
     /**
      * 控制连接数量
      */
