@@ -53,6 +53,9 @@ module.exports = function (client, next) {
         clientInfo.chargingInfo.duration = deviceData.data.duration
         clientInfo.chargingInfo.setDuration = deviceData.data.setDuration
         clientInfo.chargingInfo.setEnergy = deviceData.data.setEnergy
+        // 更改设备状态
+        clientInfo.runStatus = deviceData.data.status
+        clientInfo.ledStatus = deviceData.data.status
         // 上报设备推送信息
         client.server.notify(id,postData,notifyUrl);
         next()

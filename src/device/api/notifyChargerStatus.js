@@ -41,6 +41,7 @@ module.exports = function (client, next) {
         // 重新初始化 client extendClient 对象
         let clientInfo = client.extendClient
         clientInfo.ledStatus = deviceData.data.status
+        clientInfo.runStatus = deviceData.data.status
 
         // 上报设备推送信息
         client.server.notify(id,postData,notifyUrl);
