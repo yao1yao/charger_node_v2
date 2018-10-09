@@ -18,6 +18,8 @@ module.exports = function (client, next) {
             "respType":deviceData.reqType,
         }))
         // 更新 client extendClient 对象
+        client.server.log.ExceptionLogHandler(`${this.extendClient.id+JSON.stringify(client.auth)}`)
+
         let clientInfo = client.extendClient
         clientInfo.ledStatus = deviceData.data.ledStatus
     } else {

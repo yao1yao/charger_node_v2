@@ -60,7 +60,7 @@ module.exports = class Client extends  EventEmitter {
         this._onclose = this._onclose.bind(this);
         this._onend = this._onend.bind(this);
 
-        this.socket.setTimeout(240000);
+        this.socket.setTimeout(300000);
         // 监听到数据发送
         this.socket.on('data',this._ondata);
         // 监听到错误
@@ -135,12 +135,11 @@ module.exports = class Client extends  EventEmitter {
         this.server.log.ExceptionLogHandler(`${this.extendClient.id} timeout event for destory`)
         // 关闭套接字
         this.socket.destroy();
-
     }
     _onclose(had_error) {
-        debug('close')
         this.server.log.ExceptionLogHandler(`${this.extendClient.id} close event for destory`)
-        if(this.socket.destroyed){
+        // 判断套接字关闭成功了，才移除授权信息
+        if(this.socket.destoryed){
             let server = this.server;
             let clientId = this.clientId
             if(typeof(this.auth)==='undefined'){
@@ -148,7 +147,7 @@ module.exports = class Client extends  EventEmitter {
             }else {
                 let authId = this.auth.id;
                 server.removeAuthClient(authId, clientId);
-                delete this.auth;
+                this.auth=null;
                 this.server.log.ExceptionLogHandler(`${this.extendClient.id} delete auth for destory`)
             }
         }
