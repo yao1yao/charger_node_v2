@@ -138,8 +138,6 @@ module.exports = class Client extends  EventEmitter {
     }
     _onclose(had_error) {
         this.server.log.ExceptionLogHandler(`${this.extendClient.id} close event for destory`)
-        // 判断套接字关闭成功了，才移除授权信息
-        if(this.socket.destoryed){
             let server = this.server;
             let clientId = this.clientId
             if(typeof(this.auth)==='undefined'){
@@ -148,9 +146,9 @@ module.exports = class Client extends  EventEmitter {
                 let authId = this.auth.id;
                 server.removeAuthClient(authId, clientId);
                 this.auth=null;
+                this.server.log.ExceptionLogHandler(`${this.extendClient.id+JSON.stringify(this.auth)}`)
                 this.server.log.ExceptionLogHandler(`${this.extendClient.id} delete auth for destory`)
             }
-        }
     }
     _onend() {
         debug('end');

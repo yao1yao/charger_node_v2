@@ -50,6 +50,20 @@
 
 // {"apiId":1,"versionSN":"e1bd333f7d3de8c652b97e4d5adc55ea","mac":"ffffffffffff","reconnect":0}
 // {"msgId":"11111111","apiId":21,"respCode":100}
-if(typeof(a)==='undefined'){
-    console.log(1)
+// if(typeof(a)==='undefined'){
+//     console.log(1)
+// }
+var isAuth = function isAuth(client){
+    return client.auth || null;
 }
+a={'auth':{'b':2}}
+console.log(isAuth(a))
+if(isAuth(a)){
+    console.log('no delete')
+}
+a.auth=null
+console.log(isAuth(a))
+if(isAuth(a)){
+    console.log('is delete?')
+}
+console.log(JSON.stringify(a.auth))
