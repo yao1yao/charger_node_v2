@@ -148,7 +148,6 @@ module.exports = class Client extends  EventEmitter {
                 this.auth = null;
                 this.server.log.ExceptionLogHandler(`${this.extendClient.id+JSON.stringify(this.auth)}`)
                 this.server.log.ExceptionLogHandler(`${this.extendClient.id} delete auth for destory`)
-                this.extendClient=null
             }
     }
     _onend() {
