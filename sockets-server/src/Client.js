@@ -19,7 +19,7 @@ module.exports = class Client extends  EventEmitter {
         this.rawData = null;
         this.server = server;
         this.socket = socket;
-
+        this.auth = null;
         //利用 socket 的 ip 和端口生成客户端 id
         this.clientId = socket.remoteAddress+":"+socket.remotePort;
         // 对每个实例对象都需要组装一个复合对象给 getAllInfo 使用
@@ -144,8 +144,8 @@ module.exports = class Client extends  EventEmitter {
                 server.removeClient(clientId)
             }else {
                 let authId = this.auth.id;
-                this.auth[authId]=null;
                 server.removeAuthClient(authId, clientId);
+                this.auth = null;
                 this.server.log.ExceptionLogHandler(`${this.extendClient.id+JSON.stringify(this.auth)}`)
                 this.server.log.ExceptionLogHandler(`${this.extendClient.id} delete auth for destory`)
             }
