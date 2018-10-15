@@ -317,7 +317,7 @@ module.exports =  class ClientServer extends Server {
         //记录 devie-data 设备发送的消息，写入日志
         let logData = {
             clientIp: client.socket.remoteAddress,
-            clientId: client.hasOwnProperty("auth")?client.auth.id:'-',
+            clientId: typeof(client.auth)==='undefined'?'-':client.auth.id,
             label: "device-send",
             data: JSON.parse(client.rawData)
         }
