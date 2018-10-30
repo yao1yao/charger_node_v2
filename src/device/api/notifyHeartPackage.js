@@ -10,6 +10,8 @@ const {packageErr, packageSuccess, isAuth} = require('../utils');
 module.exports = function (client, next) {
     // 提取设备数据
     let deviceData = client.data;
+    debug(client.auth)
+    client.server.log.ExceptionLogHandler(`${client.extendClient.id+'  notifyHearPackage  '+JSON.stringify(client.auth)}`)
     // 拉取错误服务
     let  ERR_TYPE = client.server.services.AppError.constructor.error;
     if (isAuth(client)) {
@@ -18,8 +20,6 @@ module.exports = function (client, next) {
             "respType":deviceData.reqType,
         }))
         // 更新 client extendClient 对象
-        client.server.log.ExceptionLogHandler(`${client.extendClient.id+JSON.stringify(client.auth)}`)
-
         let clientInfo = client.extendClient
         clientInfo.ledStatus = deviceData.data.ledStatus
     } else {
