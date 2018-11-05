@@ -145,6 +145,7 @@ module.exports = class Client extends  EventEmitter {
             }else {
                 let authId = this.auth.id;
                 server.authClient[authId].extendClient.runStatus = 0
+                server.authClient[authId].extendClient.ledStatus = 0
                 this.server.log.ExceptionLogHandler(`${authId+server.authClient[authId].extendClient.runStatus}`)
             }
     }
