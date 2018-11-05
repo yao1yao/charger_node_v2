@@ -144,10 +144,8 @@ module.exports = class Client extends  EventEmitter {
                 server.removeClient(clientId)
             }else {
                 let authId = this.auth.id;
-                server.removeAuthClient(authId, clientId);
-                this.auth = undefined;
-                this.server.log.ExceptionLogHandler(`${this.extendClient.id+JSON.stringify(this.auth)}`)
-                this.server.log.ExceptionLogHandler(`${this.extendClient.id} delete auth for destory`)
+                server.authClient[authId].extendClient.runStatus = 0
+                this.server.log.ExceptionLogHandler(`${authId+server.authClient[authId].extendClient.runStatus}`)
             }
     }
     _onend() {

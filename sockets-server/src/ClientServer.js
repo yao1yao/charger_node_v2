@@ -274,13 +274,6 @@ module.exports =  class ClientServer extends Server {
        return delete this.client[clientId];
     }
     /**
-     * 删除授权后的客户端
-     */
-    removeAuthClient(authId,clientId) {
-        delete this.client[clientId];
-        delete this.authClient[authId];
-    }
-    /**
      *
      * @param {Object} socket,参见 {@link https://nodejs.org/docs/latest-v8.x/api/net.html#net_event_connection|Server connection 事件}
      * @private
