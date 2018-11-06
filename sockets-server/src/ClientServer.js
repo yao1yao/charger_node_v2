@@ -308,13 +308,17 @@ module.exports =  class ClientServer extends Server {
         debug('receive clientData event!');
         //无需在注入回调
         //记录 devie-data 设备发送的消息，写入日志
-        let logData = {
-            clientIp: client.socket.remoteAddress,
-            clientId: typeof(client.auth)==='undefined'?'-':client.auth.id,
-            label: "device-send",
-            data: JSON.parse(client.rawData)
+        try{
+            let logData = {
+                clientIp: client.socket.remoteAddress,
+                clientId: typeof(client.auth)==='undefined'?'-':client.auth.id,
+                label: "device-send",
+                data: JSON.parse(client.rawData)
+            }
+            this.log.deviceLogHandler(logData)
+        }catch (err){
+            debug('parser json fail: %s',err.message);
         }
-        this.log.deviceLogHandler(logData)
         router.handle(client);
     }
     notify(clientId,notifyData,postUrl){
