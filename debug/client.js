@@ -16,7 +16,6 @@ process.stdin.on('data', function(data){
         conn.write(data);
     }
 });
-
 //连接时设置最多连接十次，并且开启定时器三秒后再连接
 (function connect() {
     function reconnect() {

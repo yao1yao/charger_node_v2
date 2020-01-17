@@ -4,8 +4,6 @@
 const debug = require('debug')('socket:server');
 const net = require('net');
 
-
-
 const {Server} = net;
 
 const request = require('request')
@@ -45,7 +43,6 @@ module.exports =  class ClientServer extends Server {
     },options={
     },connectionListener=null) {
         super(options,connectionListener);
-
         //所有连接
         this.onlineNum = 0;
         //保存所有 socket 句柄

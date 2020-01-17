@@ -6,7 +6,6 @@ const util = require('util')
 
 function MemoryWatch(){
     let _initMemory = process.memoryUsage();
-
     function getShowMemInfo(){
         let currentMemory = process.memoryUsage()
         return {
