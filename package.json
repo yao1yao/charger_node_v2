@@ -47,7 +47,7 @@
     "express-validator": "^5.2.0",
     "formidable": "^1.2.1",
     "hashids": "^1.1.4",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.21",
     "md5": "^2.2.1",
     "md5-file": "^4.0.0",
     "moment": "^2.22.2",
